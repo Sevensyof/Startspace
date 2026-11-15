@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark">
+  <title>Startspace</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      background: #0b0f16;
+    }
+  </style>
+  <link rel="preconnect" href="https://t3.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <div id="bg">
+    <video id="bg-video" class="bg-video" muted loop playsinline preload="none"></video>
+  </div>
+  <div id="overlay"></div>
+  <main class="page">
+    <header class="top"></header>
+    <div id="widgets-left" class="widgets-left">
+      <div id="weather" class="weather hidden" role="button" tabindex="0" aria-expanded="false" title="Нажмите, чтобы раскрыть прогноз на неделю">
+        <div class="weather-title">Погода</div>
+        <div class="weather-head">
+          <span id="weather-icon" class="weather-icon"></span>
+          <span id="weather-temp" class="weather-temp"></span>
+        </div>
+        <div id="weather-desc" class="weather-desc"></div>
+        <div id="weather-details" class="weather-details"></div>
+        <div id="weather-week" class="weather-week"></div>
+        <div class="weather-chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 12" width="28" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l10 8 10-8"/></svg>
+        </div>
+      </div>
+      <div id="currency" class="currency hidden">
+        <div class="currency-head">Курсы валют</div>
+        <div id="currency-list" class="currency-list"></div>
+        <div id="currency-detail" class="currency-detail"></div>
+        <div class="currency-chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 12" width="28" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l10 8 10-8"/></svg>
+        </div>
+      </div>
+    </div>
+    <div id="bookmarks" class="bookmarks-wrap">
+      <button id="bookmarks-btn" class="bookmarks-btn" type="button" title="Избранное">★ Избранное</button>
+      <div id="bookmarks-panel" class="bookmarks-panel">
+        <div class="bookmarks-head">Избранное</div>
+        <div id="bookmarks-list" class="bookmarks-list"></div>
+      </div>
+    </div>
+    <section class="center">
+      <div id="clock" class="clock"></div>
+      <div id="date" class="date"></div>
+      <form id="search" class="search hidden">
+        <button id="voice-btn" class="search-voice hidden" type="button" title="Голосовой поиск">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#fff" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+        </button>
+        <input id="search-input" type="text" placeholder="Поиск" autocomplete="off" spellcheck="false" autofocus>
+        <div class="search-actions">
+          <button id="ai-mode-btn" class="search-ai" type="button" title="Режим ИИ в Google">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="#fff" d="M12 2.5c.6 4.6 4.4 8.4 9 9-4.6.6-8.4 4.4-9 9-.6-4.6-4.4-8.4-9-9 4.6-.6 8.4-4.4 9-9z"/></svg>
+            <span>Режим ИИ</span>
+          </button>
+        </div>
+      </form>
+      <nav id="links" class="links hidden"></nav>
+    </section>
+    <footer class="bottom"></footer>
+  </main>
+  <aside id="ai-panel" class="ai-panel" aria-label="Популярные ИИ">
+    <button id="ai-edit" class="panel-edit" type="button" title="Изменить список">✎</button>
+    <nav id="ai-list" class="ai-list"></nav>
+  </aside>
+  <aside id="fun-panel" class="fun-panel" aria-label="Соцсети и игры">
+    <button id="fun-edit" class="panel-edit" type="button" title="Изменить список">✎</button>
+    <nav id="fun-list" class="ai-list"></nav>
+  </aside>
+  <div id="tab-rail" class="tab-rail">
+    <div id="fun-handle" class="fun-handle" title="Соцсети и игры"><span class="fun-handle-dots">•••</span></div>
+    <div id="ai-handle" class="ai-handle" title="Популярные ИИ"><span class="ai-handle-label">ИИ</span></div>
+  </div>
+  <div id="side-backdrop" class="side-backdrop"></div>
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+  <aside id="drawer" class="drawer" aria-label="Настройки">
+    <button id="settings-btn" type="button" title="Настройки" aria-label="Настройки">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3.3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.44.62.82.75H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+      </svg>
+    </button>
+    <div class="drawer-head">
+      <span class="drawer-title">Настройки</span>
+      <button id="drawer-close" type="button" class="drawer-close" aria-label="Закрыть настройки">✕</button>
+    </div>
+    <iframe id="drawer-frame" title="Настройки Startspace"></iframe>
+  </aside>
+  <script src="storage.js"></script>
+  <script src="newtab.js"></script>
+</body>
+</html>
