@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Startspace",
+  "version": "1.0.0",
+  "description": "Настраиваемая новая вкладка: фон, часы, поиск, быстрые ссылки, избранное, погода, курсы валют и боковые панели.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "startspace@sevensyof.github.io",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Настройки Startspace",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["storage", "unlimitedStorage", "bookmarks"],
+  "host_permissions": [
+    "https://api.open-meteo.com/*",
+    "https://geocoding-api.open-meteo.com/*",
+    "https://*.gstatic.com/*",
+    "https://api.met.no/*",
+    "https://www.cbr-xml-daily.ru/*"
+  ]
+}

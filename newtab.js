@@ -1345,7 +1345,11 @@ function createSiteIcon(site) {
   const preset = sitePresetIcon(site.url);
   if (preset) {
     icon.style.background = preset.bg;
-    icon.innerHTML = preset.svg;
+    const parsed = new DOMParser().parseFromString(preset.svg, "image/svg+xml");
+    const svg = parsed.documentElement;
+    if (svg && svg.nodeName.toLowerCase() === "svg") {
+      icon.appendChild(document.importNode(svg, true));
+    }
   } else {
     icon.style.background = "#ffffff";
     fillPanelFavicon(icon, site.url);
