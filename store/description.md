@@ -31,7 +31,7 @@ Startspace — это спокойная новая вкладка, котору
 • bookmarks — показ избранного из закладок браузера.
 • Доступ к api.met.no, api.open-meteo.com, geocoding-api.open-meteo.com, www.cbr-xml-daily.ru и t3.gstatic.com — погода, курсы валют и иконки сайтов.
 
-Startspace создан для Chromium-браузеров: Chrome, Edge, Chromium и других совместимых браузеров.
+Startspace создан для Chromium-браузеров: Chrome, Edge, Chromium и других совместимых браузеров. Версия для Firefox доступна в репозитории проекта.
 
 ## Скриншоты для магазина
 
@@ -47,4 +47,4 @@ Startspace создан для Chromium-браузеров: Chrome, Edge, Chromi
 
 - Категория: Инструменты.
 - Язык: русский.
-- Платформа: Chromium (Manifest V3).
+- Платформа: Chrome / Chromium и Firefox (Manifest V3).

@@ -1,6 +1,10 @@
-# Startspace
+<p align="center">
+  <img src="icons/icon128.png" width="96" height="96" alt="Startspace">
+</p>
 
-Настраиваемая новая вкладка для Chromium: часы, поиск, быстрые ссылки, избранное, погода, курсы валют и боковые панели ИИ.
+<h1 align="center">Startspace</h1>
+
+<p align="center">Настраиваемая новая вкладка для Chrome и Firefox: часы, поиск, избранное, погода, курсы валют и боковые панели.</p>
 
 ![Главный экран Startspace](store/screenshots/01-main.png)
 
@@ -39,20 +43,22 @@
 
 ## Установка
 
-1. Скачайте `startspace-1.0.0.zip` из [релиза](https://github.com/Sevensyof/Startspace/releases/tag/v1.0.0) или клонируйте репозиторий.
-2. Откройте `chrome://extensions`.
-3. Включите режим разработчика.
+Доступно для **Chrome / Chromium** и **Firefox**.
+
+### Chrome / Chromium
+
+1. Скачайте `startspace-1.0.1.zip` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
+2. Распакуйте архив.
+3. Откройте `chrome://extensions` и включите режим разработчика.
 4. Нажмите «Загрузить распакованное расширение» и выберите папку с `manifest.json`.
 
 ### Firefox
 
-Отдельная сборка находится в папке `firefox/`.
+1. Скачайте `startspace-1.0.1-signed.xpi` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
+2. Откройте файл в Firefox и подтвердите установку.
+3. Откройте новую вкладку — Startspace уже там.
 
-1. Откройте `about:debugging#/runtime/this-firefox`.
-2. Нажмите «Загрузить временное дополнение».
-3. Выберите `firefox/manifest.json`.
-
-Для постоянной установки сборку нужно подписать в AMO. Голосовой ввод в Firefox недоступен: кнопка автоматически скрывается.
+Для разработки можно загрузить папку `firefox/` через `about:debugging#/runtime/this-firefox` как временное дополнение. Голосовой ввод в Firefox недоступен: кнопка автоматически скрывается.
 
 Проверка и сборка:
 
