@@ -1,4 +1,4 @@
-const MAX_LINKS = 30;
+﻿const MAX_LINKS = 30;
 const MAX_PANEL_SITES = 25;
 
 const DEFAULT_AI_SITES = [
@@ -43,12 +43,7 @@ const DEFAULT_SETTINGS = {
   searchEngine: "google",
   showLinks: true,
   linkShape: "square",
-  links: [
-    { title: "GitHub", url: "https://github.com/" },
-    { title: "YouTube", url: "https://www.youtube.com/" },
-    { title: "Pinterest", url: "https://ru.pinterest.com/" },
-    { title: "TikTok", url: "https://www.tiktok.com/" }
-  ],
+  links: [],
   showWeather: false,
   weatherCity: "",
   weatherLat: null,
@@ -255,3 +250,4 @@ function loadSettings(callback) {
     }
   );
 }
+
