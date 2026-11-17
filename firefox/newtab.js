@@ -1247,11 +1247,7 @@ async function loadCurrency() {
 
 function syncRail() {
   const hasOpen = Boolean(document.querySelector(".ai-panel.open, .fun-panel.open"));
-  aiHandle.classList.toggle("shifted", aiPanel.classList.contains("open"));
-  funHandle.classList.toggle("shifted", funPanel.classList.contains("open"));
-  for (const view of customPanelViews) {
-    view.handle.classList.toggle("shifted", view.panel.classList.contains("open"));
-  }
+  tabRail.classList.toggle("shifted", hasOpen);
   document.body.classList.toggle("panel-open", hasOpen);
 }
 

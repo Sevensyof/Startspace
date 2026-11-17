@@ -803,6 +803,11 @@ body[data-link-shape="round"] .link-icon {
   flex-direction: column;
   gap: 10px;
   z-index: 10;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-rail.shifted {
+  transform: translate(250px, -50%);
 }
 
 .ai-handle,
@@ -826,13 +831,7 @@ body[data-link-shape="round"] .link-icon {
   opacity: 0.7;
   cursor: pointer;
   transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.35s ease,
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.ai-handle.shifted,
-.fun-handle.shifted {
-  transform: translateX(250px);
 }
 
 .ai-handle:hover,
