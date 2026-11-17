@@ -263,11 +263,6 @@ function applyAccent() {
   $("accent-swatch").style.background = base;
 }
 
-function gradientValue() {
-  const angle = Number(settings.gradientAngle) || 135;
-  return `linear-gradient(${angle}deg, ${settings.gradientStart || "#10141f"}, ${settings.gradientEnd || "#2a3040"})`;
-}
-
 function renderCustomPanelsEditor() {
   const wrap = $("custom-panels-editor");
   if (!wrap) return;
@@ -339,11 +334,6 @@ function render() {
   $("image-blur").value = settings.imageBlur;
   $("image-dim-value").textContent = settings.imageDim + "%";
   $("image-blur-value").textContent = settings.imageBlur + "px";
-  $("gradient-start").value = settings.gradientStart || "#10141f";
-  $("gradient-end").value = settings.gradientEnd || "#2a3040";
-  $("gradient-angle").value = settings.gradientAngle || 135;
-  $("gradient-angle-value").textContent = (settings.gradientAngle || 135) + "°";
-  $("gradient-preview").style.backgroundImage = gradientValue();
   $("panel-opacity").value = settings.panelOpacity;
   $("panel-opacity-value").textContent = settings.panelOpacity + "%";
   $("show-recommended").checked = settings.showRecommended;
@@ -486,34 +476,6 @@ function bind() {
     const value = $("fun-panel-name").value.trim() || "•••";
     $("fun-panel-name").value = value;
     update({ funPanelName: value });
-  });
-
-  $("gradient-start").addEventListener("input", () => {
-    update({ gradientStart: $("gradient-start").value });
-    $("gradient-preview").style.backgroundImage = gradientValue();
-  });
-
-  $("gradient-end").addEventListener("input", () => {
-    update({ gradientEnd: $("gradient-end").value });
-    $("gradient-preview").style.backgroundImage = gradientValue();
-  });
-
-  $("gradient-angle").addEventListener("input", () => {
-    $("gradient-angle-value").textContent = $("gradient-angle").value + "°";
-    update({ gradientAngle: Number($("gradient-angle").value) });
-    $("gradient-preview").style.backgroundImage = gradientValue();
-  });
-
-  $("apply-gradient").addEventListener("click", () => {
-    update({
-      backgroundType: "gradient",
-      imageUrl: "",
-      imageType: "gradient",
-      gradientStart: $("gradient-start").value,
-      gradientEnd: $("gradient-end").value,
-      gradientAngle: Number($("gradient-angle").value)
-    });
-    render();
   });
 
   document.querySelectorAll("#link-shape button").forEach((button) => {
