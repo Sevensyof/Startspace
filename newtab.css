@@ -1278,31 +1278,14 @@ body.panel-open .side-backdrop {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-body {
-  color: var(--ui-text, #e6e9ef);
-}
-
-.ai-link,
-.site-edit-name,
 .bookmark-item,
 .bookmarks-btn,
 .bookmarks-head,
 .bookmarks-empty,
-.search input,
-.search-ai,
 .drawer-title,
 .drawer-head,
-.clock,
-.date,
 .link-title,
 .weather,
-.currency,
-.ai-handle,
-.fun-handle {
+.currency {
   color: var(--ui-text, #e6e9ef);
-}
-
-.search input::placeholder {
-  color: var(--ui-text, #e6e9ef);
-  opacity: 0.5;
 }
