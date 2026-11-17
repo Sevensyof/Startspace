@@ -32,6 +32,9 @@ const drawerEl = document.getElementById("drawer");
 const drawerBackdrop = document.getElementById("drawer-backdrop");
 const drawerClose = document.getElementById("drawer-close");
 const drawerFrame = document.getElementById("drawer-frame");
+const saveConfirm = document.getElementById("save-confirm");
+const saveConfirmYes = document.getElementById("save-confirm-yes");
+const saveConfirmNo = document.getElementById("save-confirm-no");
 const aiPanel = document.getElementById("ai-panel");
 const aiList = document.getElementById("ai-list");
 const funPanel = document.getElementById("fun-panel");
@@ -1628,7 +1631,51 @@ function openDrawer(target, tab) {
   }
 }
 
+function settingsApi() {
+  try {
+    return drawerFrame.contentWindow.startspaceSettings || null;
+  } catch {
+    return null;
+  }
+}
+
+function showSaveConfirm() {
+  if (saveConfirm) saveConfirm.classList.remove("hidden");
+}
+
+function hideSaveConfirm() {
+  if (saveConfirm) saveConfirm.classList.add("hidden");
+}
+
 function closeDrawer() {
+  if (saveConfirm && !saveConfirm.classList.contains("hidden")) return;
+  if (drawerOpen) {
+    const api = settingsApi();
+    if (api && typeof api.isDirty === "function" && api.isDirty()) {
+      showSaveConfirm();
+      return;
+    }
+  }
+  forceCloseDrawer();
+}
+
+if (saveConfirmYes) saveConfirmYes.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const api = settingsApi();
+  if (api && typeof api.save === "function") api.save();
+  hideSaveConfirm();
+  forceCloseDrawer();
+});
+
+if (saveConfirmNo) saveConfirmNo.addEventListener("click", (event) => {
+  event.stopPropagation();
+  hideSaveConfirm();
+  drawerFrame.dataset.loaded = "0";
+  drawerFrame.removeAttribute("src");
+  forceCloseDrawer();
+});
+
+function forceCloseDrawer() {
   clearTimeout(drawerCloseTimer);
   drawerOpen = false;
   drawerEl.classList.remove("open");
@@ -1986,6 +2033,10 @@ voiceBtn.addEventListener("click", toggleVoiceSearch);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    if (saveConfirm && !saveConfirm.classList.contains("hidden")) {
+      hideSaveConfirm();
+      return;
+    }
     if (drawerOpen) {
       closeDrawer();
       return;

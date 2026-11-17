@@ -1295,3 +1295,53 @@ body.panel-open .side-backdrop {
   line-height: 1;
   display: inline-block;
 }
+
+.save-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.save-confirm-card {
+  min-width: 280px;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--panel-glass);
+  color: var(--ui-text, #e6e9ef);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.save-confirm-card p {
+  margin: 0 0 18px;
+  font-size: 16px;
+}
+
+.save-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.save-confirm-actions button {
+  min-width: 84px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+#save-confirm-no {
+  background: transparent;
+  color: var(--ui-text, #e6e9ef);
+}

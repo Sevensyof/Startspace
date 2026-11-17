@@ -5,26 +5,40 @@ if (new URLSearchParams(location.search).get("embed") === "1") {
 }
 
 let settings = cloneDefaults();
-let statusTimer = null;
+let dirty = false;
 
-function flashSaved() {
-  const el = $("save-status");
-  el.classList.add("visible");
-  clearTimeout(statusTimer);
-  statusTimer = setTimeout(() => el.classList.remove("visible"), 1500);
+function setDirty(value) {
+  dirty = value;
+  const status = $("save-status");
+  const button = $("save-settings");
+  if (status) {
+    status.textContent = value ? "Есть изменения" : "Сохранено";
+    status.classList.toggle("unsaved", value);
+    status.classList.add("visible");
+  }
+  if (button) button.disabled = !value;
+}
+
+function saveSettings() {
+  chrome.storage.local.set(Object.assign({}, settings, { bgHistory }));
+  setDirty(false);
 }
 
 function update(patch) {
   Object.assign(settings, patch);
-  chrome.storage.local.set(patch);
-  flashSaved();
+  setDirty(true);
 }
+
+window.startspaceSettings = {
+  isDirty: () => dirty,
+  save: saveSettings
+};
 
 let bgHistory = [];
 
 function addBgHistory(dataUrl) {
   bgHistory = [dataUrl, ...bgHistory.filter((item) => item !== dataUrl)].slice(0, 8);
-  chrome.storage.local.set({ bgHistory });
+  setDirty(true);
   renderBgHistory();
 }
 
@@ -83,7 +97,7 @@ function renderBgHistory() {
     remove.addEventListener("click", (event) => {
       event.stopPropagation();
       bgHistory.splice(index, 1);
-      chrome.storage.local.set({ bgHistory });
+      setDirty(true);
       renderBgHistory();
     });
 
@@ -448,6 +462,8 @@ function bind() {
     });
   }
 
+  $("save-settings").addEventListener("click", saveSettings);
+
   $("add-panel").addEventListener("click", () => {
     if (settings.customPanels.length >= 5) return;
     settings.customPanels.push({
@@ -620,10 +636,9 @@ function bind() {
   $("reset").addEventListener("click", () => {
     if (!confirm("Сбросить все настройки? Это действие нельзя отменить.")) return;
     settings = cloneDefaults();
-    chrome.storage.local.set(settings);
     $("weather-result").textContent = "";
+    setDirty(true);
     render();
-    flashSaved();
   });
 }
 

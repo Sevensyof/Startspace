@@ -689,3 +689,12 @@ input[type="url"]::placeholder {
   border-color: rgba(255, 120, 120, 0.6);
   background: rgba(255, 90, 90, 0.12);
 }
+
+.save-status.unsaved {
+  color: #fbbf24;
+  opacity: 1;
+}
+
+.save-status {
+  opacity: 0.8;
+}
