@@ -14,30 +14,11 @@ function flashSaved() {
   statusTimer = setTimeout(() => el.classList.remove("visible"), 1500);
 }
 
-let pendingPatch = null;
-let saveTimer = null;
-
-function flushPendingSave() {
-  if (!pendingPatch) return;
-  const patch = pendingPatch;
-  pendingPatch = null;
-  clearTimeout(saveTimer);
-  saveTimer = null;
-  chrome.storage.local.set(patch);
-}
-
 function update(patch) {
   Object.assign(settings, patch);
-  pendingPatch = Object.assign(pendingPatch || {}, patch);
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(flushPendingSave, 150);
+  chrome.storage.local.set(patch);
   flashSaved();
 }
-
-window.addEventListener("pagehide", flushPendingSave);
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) flushPendingSave();
-});
 
 let bgHistory = [];
 
@@ -630,10 +611,7 @@ function bind() {
   });
 
   $("reset").addEventListener("click", () => {
-    if (!confirm("Сбросить все настройки?")) return;
-    pendingPatch = null;
-    clearTimeout(saveTimer);
-    saveTimer = null;
+    if (!confirm("Сбросить все настройки? Это действие нельзя отменить.")) return;
     settings = cloneDefaults();
     chrome.storage.local.set(settings);
     $("weather-result").textContent = "";
