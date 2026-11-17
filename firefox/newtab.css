@@ -1079,6 +1079,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .drawer-head {
+  border-radius: 18px 0 0 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
