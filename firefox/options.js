@@ -7,6 +7,7 @@ if (new URLSearchParams(location.search).get("embed") === "1") {
 let settings = cloneDefaults();
 let dirty = false;
 let statusTimer = null;
+const MAX_BG_HISTORY = 4;
 
 function setDirty(value) {
   dirty = value;
@@ -23,7 +24,7 @@ function setDirty(value) {
 }
 
 function saveSettings() {
-  chrome.storage.local.set(Object.assign({}, settings, { bgHistory }));
+  chrome.storage.local.set(Object.assign({}, settings, { bgHistory: bgHistory.slice(0, MAX_BG_HISTORY) }));
   setDirty(false);
 }
 
@@ -40,7 +41,8 @@ window.startspaceSettings = {
 let bgHistory = [];
 
 function addBgHistory(dataUrl) {
-  bgHistory = [dataUrl, ...bgHistory.filter((item) => item !== dataUrl)].slice(0, 8);
+  if (settings.saveBgHistory === false) return;
+  bgHistory = [dataUrl, ...bgHistory.filter((item) => item !== dataUrl)].slice(0, MAX_BG_HISTORY);
   setDirty(true);
   renderBgHistory();
 }
@@ -368,6 +370,8 @@ function render() {
   $("image-blur-value").textContent = settings.imageBlur + "px";
   $("show-recommended").checked = settings.showRecommended;
   $("recommended-field").classList.toggle("hidden", !settings.showRecommended);
+  $("save-bg-history").checked = settings.saveBgHistory !== false;
+  $("bg-history-field").classList.toggle("hidden", settings.saveBgHistory === false);
   $("clock-opacity").value = settings.clockOpacity;
   $("clock-opacity-value").textContent = settings.clockOpacity + "%";
   $("clock-weight").value = settings.clockWeight;
@@ -624,7 +628,8 @@ function bind() {
     ["show-links", "showLinks"],
     ["show-weather", "showWeather"],
     ["show-currency", "showCurrency"],
-    ["show-recommended", "showRecommended"]
+    ["show-recommended", "showRecommended"],
+    ["save-bg-history", "saveBgHistory"]
   ];
 
   for (const [id, key] of toggles) {
@@ -632,6 +637,7 @@ function bind() {
   }
 
   $("show-recommended").addEventListener("change", render);
+  $("save-bg-history").addEventListener("change", render);
 
   $("widget-transparency").addEventListener("input", () => {
     $("widget-transparency-value").textContent = $("widget-transparency").value + "%";
@@ -691,7 +697,11 @@ loadSettings((items) => {
   render();
 
   chrome.storage.local.get({ bgHistory: [] }, (store) => {
-    bgHistory = Array.isArray(store.bgHistory) ? store.bgHistory : [];
+    const storedHistory = Array.isArray(store.bgHistory) ? store.bgHistory : [];
+    bgHistory = storedHistory.slice(0, MAX_BG_HISTORY);
+    if (storedHistory.length > MAX_BG_HISTORY) {
+      chrome.storage.local.set({ bgHistory });
+    }
     renderBgHistory();
   });
 

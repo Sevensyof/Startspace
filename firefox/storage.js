@@ -109,6 +109,7 @@ const DEFAULT_SETTINGS = {
   gradientEnd: "#2a3040",
   gradientAngle: 135,
   siteBackground: false,
+  saveBgHistory: true,
   hoverOpenPanels: false,
   showRecommended: true,
   showSearch: true,
