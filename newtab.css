@@ -809,7 +809,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translateX(242px);
+  transform: translateX(250px);
 }
 
 .ai-handle,
@@ -1416,6 +1416,37 @@ body.panel-open .side-backdrop {
 
 .ai-handle:hover,
 .fun-handle:hover {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.ai-panel.open::after,
+.fun-panel.open::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -30px;
+  bottom: 0;
+  width: 30px;
+  background: var(--panel-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 0 18px 18px 0;
+  pointer-events: none;
+}
+
+.tab-rail.shifted .ai-handle,
+.tab-rail.shifted .fun-handle {
+  width: 30px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.tab-rail.shifted .ai-handle:hover,
+.tab-rail.shifted .fun-handle:hover {
+  width: 44px;
+  height: 112px;
   background: rgba(255, 255, 255, 0.14);
   box-shadow: none;
 }
