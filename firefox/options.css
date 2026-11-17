@@ -636,3 +636,39 @@ body.embedded .btn.ghost:hover {
 .custom-panel-row input {
   flex: 1;
 }
+
+body {
+  color: var(--ui-text, #e6e9ef);
+}
+
+.label,
+.value,
+.tabs button,
+.tabs button.active {
+  color: var(--ui-text, #e6e9ef);
+}
+
+.muted {
+  color: var(--ui-text, #e6e9ef);
+  opacity: 0.68;
+}
+
+.tabs button {
+  opacity: 0.68;
+}
+
+.tabs button.active {
+  opacity: 1;
+}
+
+input[type="text"],
+input[type="url"],
+select {
+  color: var(--ui-text, #e6e9ef);
+}
+
+input[type="text"]::placeholder,
+input[type="url"]::placeholder {
+  color: var(--ui-text, #e6e9ef);
+  opacity: 0.45;
+}

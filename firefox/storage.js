@@ -32,6 +32,7 @@ const DEFAULT_SETTINGS = {
   backgroundType: "image",
   color: "#383838",
   accentColor: "#080808",
+  uiTextColor: "#e6e9ef",
   imageUrl: "media/default-bg.jpg",
   imageType: "image",
   imageDim: 35,

@@ -1,5 +1,5 @@
 :root {
-  --panel-glass: rgba(255, 255, 255, 0.12);
+  --panel-glass: rgba(13, 17, 23, 0.56);
 }
 
 * {
@@ -529,7 +529,7 @@ body.drawer-open .bookmarks-wrap {
   padding-right: 24px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--panel-glass);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   color: #fff;
@@ -656,7 +656,7 @@ body.drawer-open .bookmarks-wrap {
 }
 
 .search input:focus {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(13, 17, 23, 0.72);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -1276,4 +1276,33 @@ body.panel-open .side-backdrop {
 .bookmarks-panel {
   background: var(--panel-glass);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+body {
+  color: var(--ui-text, #e6e9ef);
+}
+
+.ai-link,
+.site-edit-name,
+.bookmark-item,
+.bookmarks-btn,
+.bookmarks-head,
+.bookmarks-empty,
+.search input,
+.search-ai,
+.drawer-title,
+.drawer-head,
+.clock,
+.date,
+.link-title,
+.weather,
+.currency,
+.ai-handle,
+.fun-handle {
+  color: var(--ui-text, #e6e9ef);
+}
+
+.search input::placeholder {
+  color: var(--ui-text, #e6e9ef);
+  opacity: 0.5;
 }

@@ -1701,6 +1701,10 @@ function applyAccentColor() {
   document.documentElement.style.setProperty("--panel-rgb", `${pr}, ${pg}, ${pb}`);
 }
 
+function applyTextColor() {
+  document.documentElement.style.setProperty("--ui-text", settings.uiTextColor || "#e6e9ef");
+}
+
 function bookmarkIcon(url, label) {
   const wrap = document.createElement("span");
   wrap.className = "bookmark-icon";
@@ -1840,6 +1844,7 @@ function applyWidgetStyle() {
 
 function applyAll() {
   applyAccentColor();
+  applyTextColor();
   applyClockStyle();
   applyLinkShape();
   applyWidgetStyle();
@@ -2162,6 +2167,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if (keys.includes("accentColor")) {
     applyAccentColor();
+  }
+  if (keys.includes("uiTextColor")) {
+    applyTextColor();
   }
   if (keys.some((key) => ["showWeather", "weatherLat", "weatherLon", "weatherCity"].includes(key))) {
     try {

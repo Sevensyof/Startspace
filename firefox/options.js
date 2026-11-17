@@ -263,6 +263,13 @@ function applyAccent() {
   $("accent-swatch").style.background = base;
 }
 
+function applyTextColor() {
+  const base = settings.uiTextColor || "#e6e9ef";
+  document.documentElement.style.setProperty("--ui-text", base);
+  $("text-color").value = base;
+  $("text-swatch").style.background = base;
+}
+
 function renderCustomPanelsEditor() {
   const wrap = $("custom-panels-editor");
   if (!wrap) return;
@@ -489,6 +496,13 @@ function bind() {
   $("accent-color").addEventListener("input", () => {
     update({ accentColor: $("accent-color").value });
     applyAccent();
+  });
+
+  $("pick-text-color").addEventListener("click", () => $("text-color").click());
+
+  $("text-color").addEventListener("input", () => {
+    update({ uiTextColor: $("text-color").value });
+    applyTextColor();
   });
 
   $("image-file").addEventListener("change", async () => {
