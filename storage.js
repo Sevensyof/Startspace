@@ -1,4 +1,4 @@
-﻿const MAX_LINKS = 30;
+const MAX_LINKS = 30;
 const MAX_PANEL_SITES = 25;
 
 const DEFAULT_AI_SITES = [
@@ -41,7 +41,6 @@ const DEFAULT_SETTINGS = {
   gradientAngle: 135,
   siteBackground: false,
   hoverOpenPanels: false,
-  panelOpacity: 66,
   showRecommended: true,
   showSearch: true,
   showAiMode: true,

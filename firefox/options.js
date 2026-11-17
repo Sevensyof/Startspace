@@ -334,15 +334,12 @@ function render() {
   $("image-blur").value = settings.imageBlur;
   $("image-dim-value").textContent = settings.imageDim + "%";
   $("image-blur-value").textContent = settings.imageBlur + "px";
-  $("panel-opacity").value = settings.panelOpacity;
-  $("panel-opacity-value").textContent = settings.panelOpacity + "%";
   $("show-recommended").checked = settings.showRecommended;
   $("recommended-field").classList.toggle("hidden", !settings.showRecommended);
   $("clock-opacity").value = settings.clockOpacity;
   $("clock-opacity-value").textContent = settings.clockOpacity + "%";
   $("clock-weight").value = settings.clockWeight;
   $("clock-weight-value").textContent = String(settings.clockWeight);
-  document.documentElement.style.setProperty("--panel-opacity", String(settings.panelOpacity / 100));
 
   renderLinks();
   renderBgHistory();
@@ -543,15 +540,6 @@ function bind() {
   $("image-blur").addEventListener("input", () => {
     $("image-blur-value").textContent = $("image-blur").value + "px";
     update({ imageBlur: Number($("image-blur").value) });
-  });
-
-  $("panel-opacity").addEventListener("input", () => {
-    $("panel-opacity-value").textContent = $("panel-opacity").value + "%";
-    document.documentElement.style.setProperty(
-      "--panel-opacity",
-      String(Number($("panel-opacity").value) / 100)
-    );
-    update({ panelOpacity: Number($("panel-opacity").value) });
   });
 
   $("clock-opacity").addEventListener("input", () => {

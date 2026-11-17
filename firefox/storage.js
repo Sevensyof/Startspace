@@ -41,7 +41,6 @@ const DEFAULT_SETTINGS = {
   gradientAngle: 135,
   siteBackground: false,
   hoverOpenPanels: false,
-  panelOpacity: 66,
   showRecommended: true,
   showSearch: true,
   showAiMode: false,

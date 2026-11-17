@@ -1670,11 +1670,6 @@ drawerFrame.addEventListener("mouseenter", cancelDrawerClose);
 drawerFrame.addEventListener("mousemove", cancelDrawerClose);
 drawerFrame.addEventListener("load", attachDrawerHover);
 
-function applyPanelOpacity() {
-  const value = typeof settings.panelOpacity === "number" ? settings.panelOpacity : 92;
-  document.documentElement.style.setProperty("--panel-opacity", String(value / 100));
-}
-
 function hexToRgb(hex) {
   let value = String(hex || "#4f46e5").replace("#", "");
   if (value.length === 3) {
@@ -1844,7 +1839,6 @@ function applyWidgetStyle() {
 }
 
 function applyAll() {
-  applyPanelOpacity();
   applyAccentColor();
   applyClockStyle();
   applyLinkShape();
@@ -2165,9 +2159,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if (keys.includes("customPanels")) {
     renderCustomPanels();
-  }
-  if (keys.includes("panelOpacity")) {
-    applyPanelOpacity();
   }
   if (keys.includes("accentColor")) {
     applyAccentColor();
