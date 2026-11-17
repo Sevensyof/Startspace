@@ -807,7 +807,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translate(250px, -50%);
+  transform: translateX(250px);
 }
 
 .ai-handle,
