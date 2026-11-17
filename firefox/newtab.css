@@ -809,7 +809,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translateX(249px);
+  transform: translateX(242px);
 }
 
 .ai-handle,
@@ -1387,4 +1387,23 @@ body.panel-open .side-backdrop {
 .fun-handle {
   border-left: 1px solid transparent;
   background-clip: padding-box;
+}
+
+.tab-rail.shifted .ai-handle,
+.tab-rail.shifted .fun-handle {
+  border-left: 8px solid transparent;
+}
+
+.ai-handle,
+.fun-handle {
+  width: 38px;
+  border: 0;
+  background-clip: padding-box;
+}
+
+.ai-handle:hover,
+.fun-handle:hover {
+  width: 46px;
+  height: 112px;
+  box-shadow: 6px 0 22px rgba(var(--accent-rgb, 129, 140, 248), 0.35);
 }
