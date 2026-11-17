@@ -40,12 +40,32 @@
     return null;
   }
 
+  function bodyHasLightText() {
+    try {
+      const color = getComputedStyle(document.body).color;
+      const match = color.match(/rgba?\(([^)]+)\)/);
+      if (!match) return true;
+      const channels = match[1].split(",").map((value) => Number(value.trim()));
+      if (channels.length < 3 || channels.some((value) => Number.isNaN(value))) return true;
+      const luma = 0.299 * channels[0] + 0.587 * channels[1] + 0.114 * channels[2];
+      return luma > 150;
+    } catch {
+      return true;
+    }
+  }
+
   function apply(settings) {
     const background = backgroundFor(settings);
     if (!background) {
       removeLayer();
       return;
     }
+
+    const lightText = bodyHasLightText();
+    document.documentElement.style.setProperty(
+      "--startspace-site-scrim",
+      lightText ? "rgba(8, 11, 17, 0.46)" : "rgba(248, 250, 252, 0.55)"
+    );
 
     let layer = document.getElementById(LAYER_ID);
     if (!layer) {
@@ -74,8 +94,14 @@
         pointer-events: none;
       }
       html, body {
-        background-color: transparent !important;
         background-image: none !important;
+      }
+      html {
+        background-color: transparent !important;
+      }
+      body {
+        min-height: 100vh;
+        background-color: var(--startspace-site-scrim, rgba(8, 11, 17, 0.46)) !important;
       }
       ytd-app,
       ytd-page-manager,
@@ -114,6 +140,8 @@
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", load, { once: true });
   }
+  window.addEventListener("load", load, { once: true });
+  setTimeout(load, 1500);
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== "local") return;
