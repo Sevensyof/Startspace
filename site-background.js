@@ -1,12 +1,63 @@
 (() => {
   const LAYER_ID = "startspace-site-background";
   const STYLE_ID = "startspace-site-background-style";
+  const GLASS_CLASS = "startspace-glass-card";
+  let glassTimer = null;
+  let siteBackgroundActive = false;
+
+  function isGooglePage() {
+    return location.hostname.replace(/^www\./, "").toLowerCase().includes("google.");
+  }
+
+  function removeGlassCards() {
+    for (const element of document.querySelectorAll("." + GLASS_CLASS)) {
+      element.classList.remove(GLASS_CLASS);
+    }
+    if (glassTimer) {
+      clearInterval(glassTimer);
+      glassTimer = null;
+    }
+  }
+
+  function applyGlassCards() {
+    if (!siteBackgroundActive || !isGooglePage() || !document.body) return;
+
+    const inputs = document.querySelectorAll("input, textarea");
+    for (const input of inputs) {
+      const label = `${input.getAttribute("placeholder") || ""} ${input.getAttribute("aria-label") || ""}`.toLowerCase();
+      if (!/задайте вопрос|ask a question|ask anything|ask follow-up|спросите/.test(label)) continue;
+
+      let element = input.parentElement;
+      for (let depth = 0; element && depth < 8; depth += 1, element = element.parentElement) {
+        const rect = element.getBoundingClientRect();
+        if (rect.width < 220 || rect.height < 55 || rect.height > 380) continue;
+        const style = getComputedStyle(element);
+        const hasFill = style.backgroundColor !== "rgba(0, 0, 0, 0)" || style.backgroundImage !== "none";
+        if (!hasFill) continue;
+        element.classList.add(GLASS_CLASS);
+        break;
+      }
+    }
+  }
+
+  function ensureGlassCards() {
+    if (!siteBackgroundActive || !isGooglePage()) {
+      removeGlassCards();
+      return;
+    }
+    applyGlassCards();
+    if (!glassTimer) {
+      glassTimer = setInterval(applyGlassCards, 1500);
+    }
+  }
 
   function removeLayer() {
     const layer = document.getElementById(LAYER_ID);
     if (layer) layer.remove();
     const style = document.getElementById(STYLE_ID);
     if (style) style.remove();
+    siteBackgroundActive = false;
+    removeGlassCards();
   }
 
   function backgroundFor(settings) {
@@ -62,9 +113,18 @@
     }
 
     const lightText = bodyHasLightText();
+    siteBackgroundActive = true;
     document.documentElement.style.setProperty(
       "--startspace-site-scrim",
       lightText ? "rgba(8, 11, 17, 0.58)" : "rgba(248, 250, 252, 0.7)"
+    );
+    document.documentElement.style.setProperty(
+      "--startspace-glass-bg",
+      lightText ? "rgba(15, 18, 26, 0.58)" : "rgba(255, 255, 255, 0.62)"
+    );
+    document.documentElement.style.setProperty(
+      "--startspace-glass-border",
+      lightText ? "rgba(255, 255, 255, 0.14)" : "rgba(15, 20, 28, 0.12)"
     );
 
     let layer = document.getElementById(LAYER_ID);
@@ -115,7 +175,18 @@
         background-color: rgba(15, 17, 23, 0.84) !important;
         backdrop-filter: blur(14px);
       }
+      .${GLASS_CLASS} {
+        background-color: var(--startspace-glass-bg) !important;
+        background-image: none !important;
+        backdrop-filter: blur(18px) saturate(120%) !important;
+        -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+        border: 1px solid var(--startspace-glass-border) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22) !important;
+      }
     `;
+
+    ensureGlassCards();
   }
 
   function load() {
