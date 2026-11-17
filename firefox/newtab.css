@@ -837,8 +837,9 @@ body[data-link-shape="round"] .link-icon {
 .ai-handle:hover,
 .fun-handle:hover {
   opacity: 1;
-  background: rgba(var(--accent-rgb, 129, 140, 248), 0.35);
-  box-shadow: 0 0 28px rgba(var(--accent-rgb, 129, 140, 248), 0.45);
+  background: rgba(var(--panel-rgb, 13, 17, 23), 0.96);
+  border-color: rgba(var(--accent-rgb, 129, 140, 248), 0.45);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
   width: 44px;
   height: 112px;
 }
