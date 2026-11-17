@@ -1524,8 +1524,8 @@ function renderPanelNames() {
   const funIcon = funHandle.querySelector(".ai-handle-icon");
   setPanelIconNode(aiIcon, settings.aiPanelIcon, "spark");
   setPanelIconNode(funIcon, settings.funPanelIcon, "game");
-  aiHandle.title = aiName;
-  funHandle.title = funName;
+  aiHandle.setAttribute("aria-label", aiName);
+  funHandle.setAttribute("aria-label", funName);
   aiPanel.setAttribute("aria-label", aiName);
   funPanel.setAttribute("aria-label", funName);
 }
@@ -1579,7 +1579,7 @@ function renderCustomPanels() {
 
     const handle = document.createElement("div");
     handle.className = "ai-handle custom-handle";
-    handle.title = config.name || "Панель";
+    handle.setAttribute("aria-label", config.name || "Панель");
     const label = document.createElement("span");
     label.className = "ai-handle-icon";
     setPanelIconNode(label, config.icon, "grid");
