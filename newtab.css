@@ -809,7 +809,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translateX(250px);
+  transform: translateX(249px);
 }
 
 .ai-handle,
@@ -1387,11 +1387,4 @@ body.panel-open .side-backdrop {
 .fun-handle {
   border-left: 1px solid transparent;
   background-clip: padding-box;
-}
-
-
-.ai-handle,
-.fun-handle {
-  border-left: 0;
-  background-clip: border-box;
 }
