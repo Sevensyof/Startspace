@@ -1246,7 +1246,7 @@ async function loadCurrency() {
 }
 
 function syncRail() {
-  const open = Boolean(document.querySelector(".ai-panel.open"));
+  const open = Boolean(document.querySelector(".ai-panel.open, .fun-panel.open"));
   tabRail.classList.toggle("shifted", open);
   document.body.classList.toggle("panel-open", open);
 }
@@ -1261,7 +1261,7 @@ function cancelPanelClose() {
 }
 
 function openPanel(panel) {
-  for (const other of document.querySelectorAll(".ai-panel.open")) {
+  for (const other of document.querySelectorAll(".ai-panel.open, .fun-panel.open")) {
     if (other !== panel) other.classList.remove("open");
   }
   panel.classList.add("open");
@@ -1269,7 +1269,7 @@ function openPanel(panel) {
 }
 
 function closeAllPanels() {
-  for (const panel of document.querySelectorAll(".ai-panel.open")) {
+  for (const panel of document.querySelectorAll(".ai-panel.open, .fun-panel.open")) {
     panel.classList.remove("open");
   }
   setAiEditing(false);
@@ -2037,7 +2037,11 @@ document.addEventListener("click", (event) => {
     (node) =>
       node &&
       (node.id === "tab-rail" ||
-        (node.classList && (node.classList.contains("ai-panel") || node.classList.contains("ai-handle"))))
+        (node.classList &&
+          (node.classList.contains("ai-panel") ||
+            node.classList.contains("fun-panel") ||
+            node.classList.contains("ai-handle") ||
+            node.classList.contains("fun-handle"))))
   );
   if (!insidePanel) {
     closeAllPanels();

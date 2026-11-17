@@ -16,7 +16,7 @@
       const angle = Number(settings.gradientAngle) || 135;
       const start = settings.gradientStart || "#10141f";
       const end = settings.gradientEnd || "#2a3040";
-      return `linear-gradient(${angle}deg, ${start}, ${end})`;
+      return { image: `linear-gradient(${angle}deg, ${start}, ${end})`, dim: 0, blur: 0 };
     }
 
     if (settings.backgroundType === "image" && settings.imageUrl && settings.imageType !== "video") {
@@ -28,7 +28,13 @@
           return null;
         }
       }
-      return `linear-gradient(rgba(8, 11, 17, 0.32), rgba(8, 11, 17, 0.32)), url(${JSON.stringify(url)})`;
+      const dim = Math.min(0.85, Math.max(0, Number(settings.imageDim) / 100 || 0));
+      const blur = Math.max(0, Number(settings.imageBlur) || 0);
+      return {
+        image: `linear-gradient(rgba(0, 0, 0, ${dim}), rgba(0, 0, 0, ${dim})), url(${JSON.stringify(url)})`,
+        dim,
+        blur
+      };
     }
 
     return null;
@@ -47,7 +53,9 @@
       layer.id = LAYER_ID;
       document.documentElement.appendChild(layer);
     }
-    layer.style.backgroundImage = background;
+    layer.style.backgroundImage = background.image;
+    layer.style.filter = background.blur > 0 ? `blur(${background.blur}px)` : "none";
+    layer.style.transform = background.blur > 0 ? "scale(1.06)" : "none";
 
     let style = document.getElementById(STYLE_ID);
     if (!style) {
@@ -91,6 +99,8 @@
         backgroundType: "image",
         imageUrl: "",
         imageType: "image",
+        imageDim: 35,
+        imageBlur: 7,
         gradientStart: "#10141f",
         gradientEnd: "#2a3040",
         gradientAngle: 135
@@ -108,7 +118,7 @@
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== "local") return;
     const keys = Object.keys(changes);
-    if (keys.some((key) => ["siteBackground", "backgroundType", "imageUrl", "imageType", "gradientStart", "gradientEnd", "gradientAngle"].includes(key))) {
+    if (keys.some((key) => ["siteBackground", "backgroundType", "imageUrl", "imageType", "imageDim", "imageBlur", "gradientStart", "gradientEnd", "gradientAngle"].includes(key))) {
       load();
     }
   });

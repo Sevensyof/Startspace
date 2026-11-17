@@ -48,14 +48,14 @@
 
 ### Chrome / Chromium
 
-1. Скачайте `startspace-1.1.0.zip` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
+1. Скачайте `startspace-1.1.1.zip` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
 2. Распакуйте архив.
 3. Откройте `chrome://extensions` и включите режим разработчика.
 4. Нажмите «Загрузить распакованное расширение» и выберите папку с `manifest.json`.
 
 ### Firefox
 
-1. Скачайте `startspace-1.1.0-signed.xpi` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
+1. Скачайте `startspace-1.1.1-signed.xpi` из [последнего релиза](https://github.com/Sevensyof/Startspace/releases/latest).
 2. Откройте файл в Firefox и подтвердите установку.
 3. Откройте новую вкладку — Startspace уже там.
 
