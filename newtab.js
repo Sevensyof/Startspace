@@ -1510,13 +1510,20 @@ function setFunEditing(value) {
   renderFunLinks();
 }
 
+function setPanelIconNode(target, icon, fallback) {
+  if (!target) return;
+  target.textContent = "";
+  const node = panelIconNode(icon, fallback);
+  if (node) target.appendChild(node);
+}
+
 function renderPanelNames() {
   const aiName = settings.aiPanelName || "ИИ";
   const funName = settings.funPanelName || "•••";
   const aiIcon = aiHandle.querySelector(".ai-handle-icon");
   const funIcon = funHandle.querySelector(".ai-handle-icon");
-  if (aiIcon) aiIcon.textContent = settings.aiPanelIcon || "✨";
-  if (funIcon) funIcon.textContent = settings.funPanelIcon || "🎮";
+  setPanelIconNode(aiIcon, settings.aiPanelIcon, "spark");
+  setPanelIconNode(funIcon, settings.funPanelIcon, "game");
   aiHandle.title = aiName;
   funHandle.title = funName;
   aiPanel.setAttribute("aria-label", aiName);
@@ -1575,7 +1582,7 @@ function renderCustomPanels() {
     handle.title = config.name || "Панель";
     const label = document.createElement("span");
     label.className = "ai-handle-icon";
-    label.textContent = config.icon || "📌";
+    setPanelIconNode(label, config.icon, "grid");
     handle.appendChild(label);
     tabRail.appendChild(handle);
 

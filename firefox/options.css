@@ -698,3 +698,35 @@ input[type="url"]::placeholder {
 .save-status {
   opacity: 0.8;
 }
+
+.icon-select-row {
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon-select-row select {
+  flex: 1;
+}
+
+.panel-icon-preview {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ui-text, #e6e9ef);
+}
+
+.panel-icon-preview svg {
+  width: 21px;
+  height: 21px;
+}
+
+.custom-panel-row .panel-icon-preview {
+  width: 36px;
+  height: 36px;
+}

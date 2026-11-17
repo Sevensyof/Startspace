@@ -265,20 +265,25 @@ function applyTextColor() {
   $("text-swatch").style.background = base;
 }
 
-const PANEL_ICONS = ["✨", "🤖", "🧠", "💬", "🌐", "🔎", "🎮", "🎵", "📺", "📚", "⭐", "📌", "🚀", "🛠"];
-
 function fillIconSelect(select, value) {
-  const current = value || PANEL_ICONS[0];
-  const icons = PANEL_ICONS.includes(current) ? PANEL_ICONS : [current, ...PANEL_ICONS];
+  const current = normalizePanelIcon(value, "grid");
   select.textContent = "";
-  for (const icon of icons) {
+  for (const icon of PANEL_ICONS) {
     const option = document.createElement("option");
-    option.value = icon;
-    option.textContent = icon;
+    option.value = icon.id;
+    option.textContent = icon.name;
     select.appendChild(option);
   }
   select.value = current;
 }
+
+function setIconPreview(preview, id) {
+  if (!preview) return;
+  preview.textContent = "";
+  const node = panelIconNode(id, "grid");
+  if (node) preview.appendChild(node);
+}
+
 function renderCustomPanelsEditor() {
   const wrap = $("custom-panels-editor");
   if (!wrap) return;
@@ -289,9 +294,13 @@ function renderCustomPanelsEditor() {
     row.className = "custom-panel-row";
 
     const select = document.createElement("select");
-    fillIconSelect(select, panel.icon || "📌");
+    fillIconSelect(select, panel.icon || "grid");
+    const preview = document.createElement("span");
+    preview.className = "panel-icon-preview";
+    setIconPreview(preview, panel.icon || "grid");
     select.addEventListener("change", () => {
       panel.icon = select.value;
+      setIconPreview(preview, select.value);
       update({ customPanels: settings.customPanels });
     });
 
@@ -306,7 +315,7 @@ function renderCustomPanelsEditor() {
       renderCustomPanelsEditor();
     });
 
-    row.append(select, remove);
+    row.append(select, preview, remove);
     wrap.appendChild(row);
   });
 }
@@ -324,6 +333,8 @@ function render() {
   $("search-engine").value = settings.searchEngine;
   fillIconSelect($("ai-panel-icon"), settings.aiPanelIcon);
   fillIconSelect($("fun-panel-icon"), settings.funPanelIcon);
+  setIconPreview($("ai-panel-icon-preview"), $("ai-panel-icon").value);
+  setIconPreview($("fun-panel-icon-preview"), $("fun-panel-icon").value);
   $("hover-open-panels").checked = Boolean(settings.hoverOpenPanels);
 
   $("show-links").checked = settings.showLinks;
@@ -469,7 +480,7 @@ function bind() {
     settings.customPanels.push({
       id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
       name: "Панель " + (settings.customPanels.length + 1),
-      icon: "📌",
+      icon: "grid",
       sites: []
     });
     update({ customPanels: settings.customPanels });
@@ -479,10 +490,12 @@ function bind() {
   });
 
   $("ai-panel-icon").addEventListener("change", () => {
+    setIconPreview($("ai-panel-icon-preview"), $("ai-panel-icon").value);
     update({ aiPanelIcon: $("ai-panel-icon").value });
   });
 
   $("fun-panel-icon").addEventListener("change", () => {
+    setIconPreview($("fun-panel-icon-preview"), $("fun-panel-icon").value);
     update({ funPanelIcon: $("fun-panel-icon").value });
   });
 
