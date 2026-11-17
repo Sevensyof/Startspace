@@ -1382,3 +1382,9 @@ body.panel-open .side-backdrop {
   width: 18px;
   height: 18px;
 }
+
+.ai-handle,
+.fun-handle {
+  border-left: 1px solid transparent;
+  background-clip: padding-box;
+}
