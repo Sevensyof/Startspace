@@ -809,7 +809,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translateX(242px);
+  transform: translateX(250px);
 }
 
 .ai-handle,
@@ -1260,6 +1260,8 @@ body.panel-open .side-backdrop {
 .fun-panel,
 .drawer,
 #settings-btn,
+.ai-handle,
+.fun-handle,
 .bookmarks-panel {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -1379,43 +1381,4 @@ body.panel-open .side-backdrop {
 .ai-handle-icon svg {
   width: 18px;
   height: 18px;
-}
-
-.ai-handle,
-.fun-handle {
-  border-left: 1px solid transparent;
-  background-clip: padding-box;
-}
-
-.tab-rail.shifted .ai-handle,
-.tab-rail.shifted .fun-handle {
-  border-left: 8px solid transparent;
-}
-
-.ai-handle,
-.fun-handle {
-  width: 38px;
-  border: 0;
-  background-clip: padding-box;
-}
-
-.ai-handle:hover,
-.fun-handle:hover {
-  width: 46px;
-  height: 112px;
-  box-shadow: 6px 0 22px rgba(var(--accent-rgb, 129, 140, 248), 0.35);
-}
-
-.ai-handle,
-.fun-handle {
-  transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.35s ease,
-    border-left-width 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-    width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-    height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.ai-handle:hover,
-.fun-handle:hover {
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: none;
 }
