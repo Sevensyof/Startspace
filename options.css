@@ -506,7 +506,7 @@ body.embedded .foot-note {
   margin: 0 auto 18px;
   padding: 4px;
   background: #151b26;
-  border: 1px solid #232c3d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
 }
 
