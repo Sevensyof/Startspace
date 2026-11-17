@@ -263,6 +263,47 @@ function applyAccent() {
   $("accent-swatch").style.background = base;
 }
 
+function gradientValue() {
+  const angle = Number(settings.gradientAngle) || 135;
+  return `linear-gradient(${angle}deg, ${settings.gradientStart || "#10141f"}, ${settings.gradientEnd || "#2a3040"})`;
+}
+
+function renderCustomPanelsEditor() {
+  const wrap = $("custom-panels-editor");
+  if (!wrap) return;
+  wrap.textContent = "";
+
+  settings.customPanels.forEach((panel, index) => {
+    const row = document.createElement("div");
+    row.className = "custom-panel-row";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.maxLength = 16;
+    input.value = panel.name || "Панель";
+    input.placeholder = "Название панели";
+    input.addEventListener("change", () => {
+      panel.name = input.value.trim() || "Панель";
+      input.value = panel.name;
+      update({ customPanels: settings.customPanels });
+    });
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "btn ghost small";
+    remove.textContent = "✕";
+    remove.title = "Удалить панель";
+    remove.addEventListener("click", () => {
+      settings.customPanels.splice(index, 1);
+      update({ customPanels: settings.customPanels });
+      renderCustomPanelsEditor();
+    });
+
+    row.append(input, remove);
+    wrap.appendChild(row);
+  });
+}
+
 function render() {
   $("show-clock").checked = settings.showClock;
   $("clock-24h").checked = settings.clock24h;
@@ -271,7 +312,11 @@ function render() {
 
   $("show-search").checked = settings.showSearch;
   $("voice-search").checked = settings.voiceSearch;
+  $("show-ai-mode").checked = settings.showAiMode !== false;
+  $("site-background").checked = Boolean(settings.siteBackground);
   $("search-engine").value = settings.searchEngine;
+  $("ai-panel-name").value = settings.aiPanelName;
+  $("fun-panel-name").value = settings.funPanelName;
 
   $("show-links").checked = settings.showLinks;
   document.querySelectorAll("#link-shape button").forEach((button) => {
@@ -293,6 +338,11 @@ function render() {
   $("image-blur").value = settings.imageBlur;
   $("image-dim-value").textContent = settings.imageDim + "%";
   $("image-blur-value").textContent = settings.imageBlur + "px";
+  $("gradient-start").value = settings.gradientStart || "#10141f";
+  $("gradient-end").value = settings.gradientEnd || "#2a3040";
+  $("gradient-angle").value = settings.gradientAngle || 135;
+  $("gradient-angle-value").textContent = (settings.gradientAngle || 135) + "°";
+  $("gradient-preview").style.backgroundImage = gradientValue();
   $("panel-opacity").value = settings.panelOpacity;
   $("panel-opacity-value").textContent = settings.panelOpacity + "%";
   $("show-recommended").checked = settings.showRecommended;
@@ -306,6 +356,7 @@ function render() {
   renderLinks();
   renderBgHistory();
   renderRecommended();
+  renderCustomPanelsEditor();
 }
 
 async function findCity() {
@@ -402,6 +453,66 @@ function bind() {
       activateTab(button.dataset.tab);
       window.scrollTo(0, 0);
     });
+  });
+
+  for (const label of document.querySelectorAll("label.toggle")) {
+    label.addEventListener("click", (event) => {
+      if (event.target.closest(".switch") || event.target.matches('input[type="checkbox"]')) return;
+      event.preventDefault();
+    });
+  }
+
+  $("add-panel").addEventListener("click", () => {
+    if (settings.customPanels.length >= 5) return;
+    settings.customPanels.push({
+      id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+      name: "Панель " + (settings.customPanels.length + 1),
+      sites: []
+    });
+    update({ customPanels: settings.customPanels });
+    renderCustomPanelsEditor();
+    const inputs = $("custom-panels-editor").querySelectorAll("input");
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  });
+
+  $("ai-panel-name").addEventListener("change", () => {
+    const value = $("ai-panel-name").value.trim() || "ИИ";
+    $("ai-panel-name").value = value;
+    update({ aiPanelName: value });
+  });
+
+  $("fun-panel-name").addEventListener("change", () => {
+    const value = $("fun-panel-name").value.trim() || "•••";
+    $("fun-panel-name").value = value;
+    update({ funPanelName: value });
+  });
+
+  $("gradient-start").addEventListener("input", () => {
+    update({ gradientStart: $("gradient-start").value });
+    $("gradient-preview").style.backgroundImage = gradientValue();
+  });
+
+  $("gradient-end").addEventListener("input", () => {
+    update({ gradientEnd: $("gradient-end").value });
+    $("gradient-preview").style.backgroundImage = gradientValue();
+  });
+
+  $("gradient-angle").addEventListener("input", () => {
+    $("gradient-angle-value").textContent = $("gradient-angle").value + "°";
+    update({ gradientAngle: Number($("gradient-angle").value) });
+    $("gradient-preview").style.backgroundImage = gradientValue();
+  });
+
+  $("apply-gradient").addEventListener("click", () => {
+    update({
+      backgroundType: "gradient",
+      imageUrl: "",
+      imageType: "gradient",
+      gradientStart: $("gradient-start").value,
+      gradientEnd: $("gradient-end").value,
+      gradientAngle: Number($("gradient-angle").value)
+    });
+    render();
   });
 
   document.querySelectorAll("#link-shape button").forEach((button) => {
@@ -506,6 +617,8 @@ function bind() {
     ["show-date", "showDate"],
     ["show-search", "showSearch"],
     ["voice-search", "voiceSearch"],
+    ["show-ai-mode", "showAiMode"],
+    ["site-background", "siteBackground"],
     ["show-links", "showLinks"],
     ["show-weather", "showWeather"],
     ["show-currency", "showCurrency"],
@@ -570,10 +683,10 @@ loadSettings((items) => {
     chrome.storage.local.set({ links: settings.links });
   }
 
-  const allowedBackgrounds = ["system", "color", "image"];
+  const allowedBackgrounds = ["system", "color", "image", "gradient"];
   if (!allowedBackgrounds.includes(settings.backgroundType)) {
-    settings.backgroundType = "system";
-    chrome.storage.local.set({ backgroundType: "system" });
+    settings.backgroundType = "image";
+    chrome.storage.local.set({ backgroundType: "image" });
   }
 
   bind();

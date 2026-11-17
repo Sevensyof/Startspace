@@ -23,6 +23,7 @@
     <button type="button" data-tab="clock">Часы</button>
     <button type="button" data-tab="search">Поиск</button>
     <button type="button" data-tab="links">Ссылки</button>
+    <button type="button" data-tab="panels">Панели</button>
     <button type="button" data-tab="widgets">Виджеты</button>
   </nav>
 
@@ -57,6 +58,24 @@
           <input id="image-blur" type="range" min="0" max="20" step="1">
         </label>
       </div>
+
+      <div class="field">
+        <span class="label">Свой градиент</span>
+        <div class="gradient-controls">
+          <input id="gradient-start" type="color" title="Первый цвет">
+          <input id="gradient-end" type="color" title="Второй цвет">
+          <input id="gradient-angle" type="range" min="0" max="360" step="5">
+          <span id="gradient-angle-value" class="value">135°</span>
+          <button id="apply-gradient" class="btn small" type="button">Применить</button>
+        </div>
+        <div id="gradient-preview" class="gradient-preview"></div>
+      </div>
+
+      <label class="toggle">
+        <input type="checkbox" id="site-background">
+        <span class="switch"></span>
+        <span>Фон на всех сайтах (фото и градиент)</span>
+      </label>
 
       <div class="field">
         <span class="label">Прошлые фоны</span>
@@ -123,6 +142,11 @@
         <span class="switch"></span>
         <span>Голосовой ввод</span>
       </label>
+      <label class="toggle">
+        <input type="checkbox" id="show-ai-mode">
+        <span class="switch"></span>
+        <span>Показывать кнопку «Режим ИИ»</span>
+      </label>
       <label class="field">
         <span class="label">Поисковик</span>
         <select id="search-engine">
@@ -154,6 +178,24 @@
         <button id="add-link" class="btn" type="button">＋ Добавить ссылку</button>
       </div>
       <p id="links-count" class="muted"></p>
+    </section>
+
+    <section class="card" data-tab="panels">
+      <h2>Боковые панели</h2>
+      <label class="field">
+        <span class="label">Название панели ИИ</span>
+        <input id="ai-panel-name" type="text" maxlength="16">
+      </label>
+      <label class="field">
+        <span class="label">Название панели «...»</span>
+        <input id="fun-panel-name" type="text" maxlength="16">
+      </label>
+      <div class="field">
+        <span class="label">Свои панели</span>
+        <div id="custom-panels-editor" class="custom-panels-editor"></div>
+      </div>
+      <button id="add-panel" class="btn ghost small" type="button">＋ Добавить панель</button>
+      <p class="muted">Сайты добавляются кнопкой ✎ на новой вкладке.</p>
     </section>
 
     <section class="card" data-tab="widgets">

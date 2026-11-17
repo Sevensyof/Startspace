@@ -522,7 +522,7 @@ body.drawer-open .bookmarks-wrap {
 .search input {
   width: 100%;
   padding: 15px 24px;
-  padding-right: 152px;
+  padding-right: 24px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
@@ -535,9 +535,35 @@ body.drawer-open .bookmarks-wrap {
   transition: background 0.15s, border-color 0.15s;
 }
 
+.search.has-ai input {
+  padding-right: 152px;
+}
+
 .search.has-voice input {
   padding-left: 62px;
-  padding-right: 152px;
+}
+
+.voice-status {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(13, 17, 23, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #eef1f7;
+  font-size: 12.5px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+
+.voice-status.visible {
+  opacity: 1;
 }
 
 .search-actions {
@@ -1198,3 +1224,23 @@ body.panel-open .side-backdrop {
   color: #fff;
 }
 
+
+.tab-rail {
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.tab-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-handle .ai-handle-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  max-height: 68px;
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+}

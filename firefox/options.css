@@ -586,3 +586,37 @@ body.embedded .btn.ghost {
 body.embedded .btn.ghost:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+.gradient-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gradient-controls input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+}
+
+.gradient-preview {
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #2a3446;
+}
+
+.custom-panels-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-panel-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-panel-row input {
+  flex: 1;
+}

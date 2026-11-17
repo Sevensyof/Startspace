@@ -9,9 +9,12 @@ const searchForm = document.getElementById("search");
 const searchInput = document.getElementById("search-input");
 const voiceBtn = document.getElementById("voice-btn");
 const aiModeBtn = document.getElementById("ai-mode-btn");
+const searchActions = document.querySelector(".search-actions");
+const voiceStatus = document.getElementById("voice-status");
 const SpeechRecognitionApi = window.SpeechRecognition || window.webkitSpeechRecognition;
 let voiceRecognition = null;
 let voiceListening = false;
+let voiceStatusTimer = null;
 const linksEl = document.getElementById("links");
 const weatherEl = document.getElementById("weather");
 const weatherIcon = document.getElementById("weather-icon");
@@ -36,6 +39,8 @@ const funList = document.getElementById("fun-list");
 const aiHandle = document.getElementById("ai-handle");
 const funHandle = document.getElementById("fun-handle");
 const tabRail = document.getElementById("tab-rail");
+const customPanelViews = [];
+const customPanelEditing = new Map();
 
 let drawerOpen = false;
 let drawerCloseTimer = null;
@@ -303,6 +308,18 @@ function applyBackground() {
   bgVideo.style.filter = "none";
   bgEl.style.filter = "none";
 
+  if (backgroundType === "gradient") {
+    const angle = Number(settings.gradientAngle) || 135;
+    const start = settings.gradientStart || "#10141f";
+    const end = settings.gradientEnd || "#2a3040";
+    document.body.classList.remove("light-theme");
+    document.body.classList.toggle("light-bg", false);
+    bgEl.style.backgroundImage = `linear-gradient(${angle}deg, ${start}, ${end})`;
+    bgEl.style.backgroundColor = "#000";
+    overlayEl.style.opacity = 0;
+    return;
+  }
+
   if (backgroundType === "color") {
     document.body.classList.remove("light-theme");
     document.body.classList.toggle("light-bg", looksLightBackground(color));
@@ -356,11 +373,17 @@ function renderSearch() {
   const engine = SEARCH_ENGINES[settings.searchEngine] || SEARCH_ENGINES.google;
   searchInput.placeholder = "Поиск в " + engine.name;
 
+  const showAi = settings.showAiMode !== false;
   const showVoice = Boolean(settings.voiceSearch && SpeechRecognitionApi);
+  aiModeBtn.classList.toggle("hidden", !showAi);
+  searchActions.classList.toggle("hidden", !showAi);
   voiceBtn.classList.toggle("hidden", !showVoice);
   searchForm.classList.toggle("has-voice", showVoice);
-  if (!showVoice && voiceRecognition) {
-    voiceRecognition.abort();
+  searchForm.classList.toggle("has-ai", showAi);
+  if (!showVoice) {
+    voiceBtn.classList.remove("listening");
+    hideVoiceStatus();
+    if (voiceRecognition) voiceRecognition.abort();
   }
 }
 
@@ -1223,63 +1246,35 @@ async function loadCurrency() {
 }
 
 function syncRail() {
-  const open = aiPanel.classList.contains("open") || funPanel.classList.contains("open");
+  const open = Boolean(document.querySelector(".ai-panel.open"));
   tabRail.classList.toggle("shifted", open);
   document.body.classList.toggle("panel-open", open);
 }
 
 function schedulePanelClose() {
   clearTimeout(panelCloseTimer);
-  panelCloseTimer = setTimeout(() => {
-    resetAiPanel();
-    resetFunPanel();
-  }, 250);
+  panelCloseTimer = setTimeout(closeAllPanels, 250);
 }
 
 function cancelPanelClose() {
   clearTimeout(panelCloseTimer);
 }
 
-function swapPanels(openPanel, closePanel) {
-  openPanel.classList.add("no-transition");
-  closePanel.classList.add("no-transition");
-  closePanel.classList.remove("open");
-  openPanel.classList.add("open");
-  syncRail();
-  void openPanel.offsetWidth;
-  requestAnimationFrame(() => {
-    openPanel.classList.remove("no-transition");
-    closePanel.classList.remove("no-transition");
-  });
-}
-
-function openAiPanel() {
-  if (funPanel.classList.contains("open")) {
-    swapPanels(aiPanel, funPanel);
-  } else {
-    aiPanel.classList.add("open");
-    syncRail();
+function openPanel(panel) {
+  for (const other of document.querySelectorAll(".ai-panel.open")) {
+    if (other !== panel) other.classList.remove("open");
   }
-}
-
-function resetAiPanel() {
-  aiPanel.classList.remove("open");
-  if (aiEditing) setAiEditing(false);
+  panel.classList.add("open");
   syncRail();
 }
 
-function openFunPanel() {
-  if (aiPanel.classList.contains("open")) {
-    swapPanels(funPanel, aiPanel);
-  } else {
-    funPanel.classList.add("open");
-    syncRail();
+function closeAllPanels() {
+  for (const panel of document.querySelectorAll(".ai-panel.open")) {
+    panel.classList.remove("open");
   }
-}
-
-function resetFunPanel() {
-  funPanel.classList.remove("open");
-  if (funEditing) setFunEditing(false);
+  setAiEditing(false);
+  setFunEditing(false);
+  for (const view of customPanelViews) setCustomEditing(view, false);
   syncRail();
 }
 
@@ -1362,8 +1357,15 @@ function savePanelSites(key) {
   chrome.storage.local.set({ [key]: settings[key] });
 }
 
-function createPanelAddRow(listEl, key, editing) {
-  const draft = siteDrafts[key];
+function saveCustomPanels() {
+  chrome.storage.local.set({ customPanels: settings.customPanels });
+}
+
+function createPanelAddRow(listEl, sites, draftKey, editing, save) {
+  if (!siteDrafts[draftKey]) {
+    siteDrafts[draftKey] = { name: "", url: "" };
+  }
+  const draft = siteDrafts[draftKey];
   const row = document.createElement("div");
   row.className = "site-add-row";
 
@@ -1388,10 +1390,10 @@ function createPanelAddRow(listEl, key, editing) {
     const value = draft.url.trim();
     if (!value) return;
     const title = draft.name.trim() || linkTitle({ url: value });
-    settings[key].push({ name: title, url: value });
-    siteDrafts[key] = { name: "", url: "" };
-    savePanelSites(key);
-    renderPanelList(listEl, key, editing);
+    sites.push({ name: title, url: value });
+    siteDrafts[draftKey] = { name: "", url: "" };
+    save();
+    renderPanelList(listEl, sites, editing, draftKey, save);
   };
 
   const onKey = (event) => {
@@ -1412,9 +1414,9 @@ function createPanelAddRow(listEl, key, editing) {
   return row;
 }
 
-function renderPanelList(listEl, key, editing) {
+function renderPanelList(listEl, sites, editing, draftKey, save) {
   listEl.textContent = "";
-  const sites = settings[key];
+  if (!Array.isArray(sites)) return;
 
   if (editing) {
     sites.forEach((site, index) => {
@@ -1432,9 +1434,9 @@ function renderPanelList(listEl, key, editing) {
       remove.title = "Удалить";
       remove.addEventListener("click", (event) => {
         event.stopPropagation();
-        settings[key].splice(index, 1);
-        savePanelSites(key);
-        renderPanelList(listEl, key, editing);
+        sites.splice(index, 1);
+        save();
+        renderPanelList(listEl, sites, editing, draftKey, save);
       });
 
       row.append(createSiteIcon(site), label, remove);
@@ -1442,7 +1444,7 @@ function renderPanelList(listEl, key, editing) {
     });
 
     if (sites.length < MAX_PANEL_SITES) {
-      listEl.appendChild(createPanelAddRow(listEl, key, editing));
+      listEl.appendChild(createPanelAddRow(listEl, sites, draftKey, editing, save));
     }
     return;
   }
@@ -1462,30 +1464,124 @@ function renderPanelList(listEl, key, editing) {
 }
 
 function renderAiLinks() {
-  renderPanelList(aiList, "aiSites", aiEditing);
+  renderPanelList(aiList, settings.aiSites, aiEditing, "aiSites", () => savePanelSites("aiSites"));
 }
 
 function renderFunLinks() {
-  renderPanelList(funList, "funSites", funEditing);
+  renderPanelList(funList, settings.funSites, funEditing, "funSites", () => savePanelSites("funSites"));
 }
 
 function setAiEditing(value) {
   aiEditing = value;
   const button = document.getElementById("ai-edit");
-  if (button) button.textContent = value ? "✕" : "✎";
+  if (button) button.textContent = value ? "✓" : "✎";
   renderAiLinks();
 }
 
 function setFunEditing(value) {
   funEditing = value;
   const button = document.getElementById("fun-edit");
-  if (button) button.textContent = value ? "✕" : "✎";
+  if (button) button.textContent = value ? "✓" : "✎";
   renderFunLinks();
 }
 
+function renderPanelNames() {
+  const aiName = settings.aiPanelName || "ИИ";
+  const funName = settings.funPanelName || "•••";
+  const aiLabel = aiHandle.querySelector(".ai-handle-label");
+  const funLabel = funHandle.querySelector(".fun-handle-dots");
+  if (aiLabel) aiLabel.textContent = aiName;
+  if (funLabel) funLabel.textContent = funName;
+  aiHandle.title = aiName;
+  funHandle.title = funName;
+  aiPanel.setAttribute("aria-label", aiName);
+  funPanel.setAttribute("aria-label", funName);
+}
+
+function renderCustomPanelView(view) {
+  const editing = Boolean(customPanelEditing.get(view.config.id));
+  view.editButton.textContent = editing ? "✓" : "✎";
+  renderPanelList(
+    view.list,
+    view.config.sites,
+    editing,
+    "custom:" + view.config.id,
+    saveCustomPanels
+  );
+}
+
+function setCustomEditing(view, value) {
+  customPanelEditing.set(view.config.id, value);
+  renderCustomPanelView(view);
+}
+
+function renderCustomPanels() {
+  const openIds = new Set(
+    customPanelViews
+      .filter((view) => view.panel.classList.contains("open"))
+      .map((view) => view.config.id)
+  );
+
+  for (const view of customPanelViews) {
+    view.panel.remove();
+    view.handle.remove();
+  }
+  customPanelViews.length = 0;
+
+  const configs = Array.isArray(settings.customPanels) ? settings.customPanels : [];
+  for (const config of configs) {
+    const panel = document.createElement("aside");
+    panel.className = "ai-panel custom-panel";
+    panel.id = "custom-panel-" + config.id;
+    panel.setAttribute("aria-label", config.name || "Панель");
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "panel-edit";
+    editButton.title = "Изменить список";
+
+    const list = document.createElement("nav");
+    list.className = "ai-list";
+    panel.append(editButton, list);
+    document.body.insertBefore(panel, tabRail);
+
+    const handle = document.createElement("div");
+    handle.className = "ai-handle custom-handle";
+    handle.title = config.name || "Панель";
+    const label = document.createElement("span");
+    label.className = "ai-handle-label";
+    label.textContent = config.name || "Панель";
+    handle.appendChild(label);
+    tabRail.appendChild(handle);
+
+    const view = { config, panel, handle, list, editButton };
+    customPanelViews.push(view);
+
+    editButton.addEventListener("click", () => {
+      setCustomEditing(view, !customPanelEditing.get(config.id));
+    });
+
+    handle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (panel.classList.contains("open")) closeAllPanels();
+      else openPanel(panel);
+    });
+
+    handle.addEventListener("mouseenter", cancelPanelClose);
+    handle.addEventListener("mouseleave", schedulePanelClose);
+    panel.addEventListener("mouseenter", cancelPanelClose);
+    panel.addEventListener("mouseleave", schedulePanelClose);
+
+    if (openIds.has(config.id)) panel.classList.add("open");
+
+    renderCustomPanelView(view);
+  }
+
+  syncRail();
+}
+
 function openDrawer(target, tab) {
-  resetAiPanel();
-  resetFunPanel();
+  closeAllPanels();
   cancelDrawerClose();
   const src = "options.html?embed=1" + (tab ? "&tab=" + encodeURIComponent(tab) : "");
   if (tab || !drawerFrame.getAttribute("src")) {
@@ -1755,10 +1851,47 @@ function setVoiceListening(value) {
   voiceBtn.title = value ? "Остановить голосовой ввод" : "Голосовой поиск";
 }
 
-function toggleVoiceSearch() {
+function showVoiceStatus(text, duration = 2600) {
+  if (!voiceStatus) return;
+  voiceStatus.textContent = text;
+  voiceStatus.classList.add("visible");
+  clearTimeout(voiceStatusTimer);
+  if (duration > 0) {
+    voiceStatusTimer = setTimeout(hideVoiceStatus, duration);
+  }
+}
+
+function hideVoiceStatus() {
+  if (!voiceStatus) return;
+  clearTimeout(voiceStatusTimer);
+  voiceStatusTimer = null;
+  voiceStatus.classList.remove("visible");
+}
+
+async function toggleVoiceSearch() {
   if (!SpeechRecognitionApi) return;
-  if (voiceListening && voiceRecognition) {
-    voiceRecognition.stop();
+
+  if (voiceRecognition) {
+    try {
+      voiceRecognition.stop();
+    } catch {}
+    voiceRecognition = null;
+    setVoiceListening(false);
+    hideVoiceStatus();
+    return;
+  }
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showVoiceStatus("Микрофон недоступен в этом браузере.");
+    return;
+  }
+
+  showVoiceStatus("Запрашиваю доступ к микрофону…", 0);
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach((track) => track.stop());
+  } catch {
+    showVoiceStatus("Разрешите доступ к микрофону в настройках браузера.");
     return;
   }
 
@@ -1767,10 +1900,19 @@ function toggleVoiceSearch() {
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
 
+  recognition.onstart = () => {
+    setVoiceListening(true);
+    showVoiceStatus("Слушаю…", 0);
+  };
+
   recognition.onresult = (event) => {
     const result = event.results && event.results[0] && event.results[0][0];
     const text = result ? result.transcript.trim() : "";
-    if (!text) return;
+    if (!text) {
+      showVoiceStatus("Речь не распознана. Попробуйте ещё раз.");
+      return;
+    }
+    hideVoiceStatus();
     searchInput.value = text;
     if (typeof searchForm.requestSubmit === "function") {
       searchForm.requestSubmit();
@@ -1779,15 +1921,38 @@ function toggleVoiceSearch() {
     }
   };
 
-  recognition.onerror = () => setVoiceListening(false);
-  recognition.onend = () => setVoiceListening(false);
+  recognition.onerror = (event) => {
+    setVoiceListening(false);
+    voiceRecognition = null;
+    const code = event && event.error;
+    if (code === "not-allowed" || code === "service-not-allowed") {
+      showVoiceStatus("Нет доступа к микрофону.");
+    } else if (code === "no-speech") {
+      showVoiceStatus("Речь не распознана. Попробуйте ещё раз.");
+    } else if (code === "audio-capture") {
+      showVoiceStatus("Микрофон не найден.");
+    } else if (code === "network") {
+      showVoiceStatus("Сервис распознавания недоступен в этом браузере.");
+    } else if (code !== "aborted") {
+      showVoiceStatus("Не удалось распознать речь.");
+    }
+  };
+
+  recognition.onend = () => {
+    setVoiceListening(false);
+    voiceRecognition = null;
+    if (voiceStatus && voiceStatus.classList.contains("visible") && voiceStatus.textContent === "Слушаю…") {
+      hideVoiceStatus();
+    }
+  };
 
   voiceRecognition = recognition;
   try {
     recognition.start();
-    setVoiceListening(true);
   } catch {
+    voiceRecognition = null;
     setVoiceListening(false);
+    showVoiceStatus("Не удалось запустить микрофон.");
   }
 }
 
@@ -1803,9 +1968,8 @@ document.addEventListener("keydown", (event) => {
       bookmarksPanel.classList.remove("open");
       return;
     }
-    if (aiPanel.classList.contains("open") || funPanel.classList.contains("open")) {
-      resetAiPanel();
-      resetFunPanel();
+    if (document.querySelector(".ai-panel.open")) {
+      closeAllPanels();
       return;
     }
     if (document.activeElement === searchInput) {
@@ -1851,14 +2015,14 @@ weatherEl.addEventListener("keydown", (event) => {
 });
 aiHandle.addEventListener("click", (event) => {
   event.stopPropagation();
-  if (aiPanel.classList.contains("open")) resetAiPanel();
-  else openAiPanel();
+  if (aiPanel.classList.contains("open")) closeAllPanels();
+  else openPanel(aiPanel);
 });
 
 funHandle.addEventListener("click", (event) => {
   event.stopPropagation();
-  if (funPanel.classList.contains("open")) resetFunPanel();
-  else openFunPanel();
+  if (funPanel.classList.contains("open")) closeAllPanels();
+  else openPanel(funPanel);
 });
 
 for (const el of [aiPanel, funPanel, tabRail]) {
@@ -1870,11 +2034,13 @@ document.addEventListener("click", (event) => {
   const path = typeof event.composedPath === "function" ? event.composedPath() : [];
 
   const insidePanel = path.some(
-    (node) => node && (node.id === "ai-panel" || node.id === "fun-panel" || node.id === "tab-rail")
+    (node) =>
+      node &&
+      (node.id === "tab-rail" ||
+        (node.classList && (node.classList.contains("ai-panel") || node.classList.contains("ai-handle"))))
   );
   if (!insidePanel) {
-    resetAiPanel();
-    resetFunPanel();
+    closeAllPanels();
   }
 
   const insideBookmarks = path.some((node) => node && node.id === "bookmarks");
@@ -1884,8 +2050,7 @@ document.addEventListener("click", (event) => {
 });
 
 document.getElementById("side-backdrop").addEventListener("click", () => {
-  resetAiPanel();
-  resetFunPanel();
+  closeAllPanels();
 });
 
 bookmarksBtn.addEventListener("click", (event) => {
@@ -1930,14 +2095,14 @@ chrome.storage.onChanged.addListener((changes, area) => {
     settings[key] = changes[key].newValue;
   }
 
-  if (keys.some((key) => ["backgroundType", "gradient", "color", "imageUrl", "imageDim", "imageBlur"].includes(key))) {
+  if (keys.some((key) => ["backgroundType", "gradient", "gradientStart", "gradientEnd", "gradientAngle", "color", "imageUrl", "imageDim", "imageBlur"].includes(key))) {
     applyBackground();
   }
   if (keys.some((key) => ["showClock", "clock24h", "showSeconds", "showDate", "clockOpacity", "clockWeight"].includes(key))) {
     applyClockStyle();
     renderClock();
   }
-  if (keys.some((key) => ["showSearch", "voiceSearch"].includes(key))) {
+  if (keys.some((key) => ["showSearch", "voiceSearch", "showAiMode"].includes(key))) {
     renderSearch();
   }
   if (keys.some((key) => ["links", "showLinks"].includes(key))) {
@@ -1951,6 +2116,12 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if (keys.includes("funSites")) {
     renderFunLinks();
+  }
+  if (keys.some((key) => ["aiPanelName", "funPanelName"].includes(key))) {
+    renderPanelNames();
+  }
+  if (keys.includes("customPanels")) {
+    renderCustomPanels();
   }
   if (keys.includes("panelOpacity")) {
     applyPanelOpacity();
@@ -1996,6 +2167,8 @@ loadSettings((items) => {
   focusSearch();
   renderAiLinks();
   renderFunLinks();
+  renderPanelNames();
+  renderCustomPanels();
 });
 
 function scheduleFocusSearch() {

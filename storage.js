@@ -36,9 +36,14 @@ const DEFAULT_SETTINGS = {
   imageType: "image",
   imageDim: 35,
   imageBlur: 7,
+  gradientStart: "#10141f",
+  gradientEnd: "#2a3040",
+  gradientAngle: 135,
+  siteBackground: false,
   panelOpacity: 66,
   showRecommended: true,
   showSearch: true,
+  showAiMode: true,
   voiceSearch: true,
   searchEngine: "google",
   showLinks: true,
@@ -50,6 +55,9 @@ const DEFAULT_SETTINGS = {
   weatherLon: null,
   showCurrency: false,
   widgetTransparency: 0,
+  aiPanelName: "ИИ",
+  funPanelName: "•••",
+  customPanels: [],
   aiSites: DEFAULT_AI_SITES,
   funSites: DEFAULT_FUN_SITES
 };
@@ -173,6 +181,10 @@ function cloneDefaults() {
   return {
     ...DEFAULT_SETTINGS,
     links: DEFAULT_SETTINGS.links.map((item) => ({ ...item })),
+    customPanels: DEFAULT_SETTINGS.customPanels.map((panel) => ({
+      ...panel,
+      sites: Array.isArray(panel.sites) ? panel.sites.map((site) => ({ ...site })) : []
+    })),
     aiSites: DEFAULT_AI_SITES.map((site) => ({ ...site })),
     funSites: DEFAULT_FUN_SITES.map((site) => ({ ...site }))
   };
@@ -192,6 +204,16 @@ function loadSettings(callback) {
       }
       if (!Array.isArray(items.aiSites)) items.aiSites = [];
       if (!Array.isArray(items.funSites)) items.funSites = DEFAULT_FUN_SITES.map((site) => ({ ...site }));
+      if (!Array.isArray(items.customPanels)) items.customPanels = [];
+      items.customPanels = items.customPanels
+        .slice(0, 5)
+        .map((panel, index) => ({
+          id: String(panel && panel.id ? panel.id : "panel" + (index + 1)),
+          name: String(panel && panel.name ? panel.name : "Панель"),
+          sites: Array.isArray(panel && panel.sites) ? panel.sites : []
+        }));
+      if (typeof items.aiPanelName !== "string" || !items.aiPanelName.trim()) items.aiPanelName = "ИИ";
+      if (typeof items.funPanelName !== "string" || !items.funPanelName.trim()) items.funPanelName = "•••";
 
       if (!items.legacyStorageCleaned) {
         const legacyKeys = [

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Startspace",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Настраиваемая новая вкладка: фон, часы, поиск, быстрые ссылки, избранное, погода, курсы валют и боковые панели.",
   "browser_specific_settings": {
     "gecko": {
@@ -31,6 +31,25 @@
   "background": {
     "scripts": ["background.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["site-background.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "media/default-bg.jpg",
+        "media/kitty.jpg",
+        "media/recommended/bg1.jpg",
+        "media/recommended/bg2.jpg",
+        "media/recommended/bg3.jpg"
+      ],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
