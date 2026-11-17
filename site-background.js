@@ -2,6 +2,17 @@
   const LAYER_ID = "startspace-site-background";
   const STYLE_ID = "startspace-site-background-style";
 
+  function isSearchPage() {
+    const host = location.hostname.replace(/^www\./, "").toLowerCase();
+    const path = location.pathname.toLowerCase();
+    if (host.includes("google.") && path.startsWith("/search")) return true;
+    if ((host === "yandex.ru" || host === "ya.ru" || host.endsWith(".yandex.ru")) && path.startsWith("/search")) return true;
+    if (host === "bing.com" && path.startsWith("/search")) return true;
+    if (host === "duckduckgo.com" && (path === "/" || path.startsWith("/?"))) return true;
+    if (host === "search.yahoo.com" && path.startsWith("/search")) return true;
+    return false;
+  }
+
   function removeLayer() {
     const layer = document.getElementById(LAYER_ID);
     if (layer) layer.remove();
@@ -10,7 +21,7 @@
   }
 
   function backgroundFor(settings) {
-    if (!settings.siteBackground) return null;
+    if (!settings.siteBackground || isSearchPage()) return null;
 
     if (settings.backgroundType === "gradient") {
       const angle = Number(settings.gradientAngle) || 135;
