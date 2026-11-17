@@ -990,14 +990,17 @@ body[data-link-shape="round"] .link-icon {
   gap: 12px;
   padding: 9px 10px;
   border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.055);
   color: #e6e9ef;
   text-decoration: none;
   font-size: 14px;
-  transition: background 0.15s;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .ai-link:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .ai-icon {
