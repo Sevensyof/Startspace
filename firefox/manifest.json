@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Startspace",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Настраиваемая новая вкладка: фон, часы, поиск, быстрые ссылки, избранное, погода, курсы валют и боковые панели.",
   "browser_specific_settings": {
     "gecko": {
