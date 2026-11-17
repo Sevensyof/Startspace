@@ -1649,7 +1649,7 @@ function scheduleDrawerClose() {
       if (active && active.tagName === "SELECT") return;
     } catch {}
     closeDrawer();
-  }, 350);
+  }, 500);
 }
 
 function attachDrawerHover() {
@@ -1657,12 +1657,17 @@ function attachDrawerHover() {
     const doc = drawerFrame.contentDocument;
     if (!doc) return;
     doc.documentElement.addEventListener("mouseenter", cancelDrawerClose);
+    doc.documentElement.addEventListener("mousemove", cancelDrawerClose);
+    doc.documentElement.addEventListener("pointermove", cancelDrawerClose);
     doc.documentElement.addEventListener("mouseleave", scheduleDrawerClose);
   } catch {}
 }
 
 drawerEl.addEventListener("mouseenter", cancelDrawerClose);
+drawerEl.addEventListener("mousemove", cancelDrawerClose);
 drawerEl.addEventListener("mouseleave", scheduleDrawerClose);
+drawerFrame.addEventListener("mouseenter", cancelDrawerClose);
+drawerFrame.addEventListener("mousemove", cancelDrawerClose);
 drawerFrame.addEventListener("load", attachDrawerHover);
 
 function applyPanelOpacity() {
