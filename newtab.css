@@ -1084,10 +1084,7 @@ body[data-link-shape="round"] .link-icon {
   align-items: center;
   justify-content: flex-start;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(10, 13, 20, 0.42);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: transparent;
   color: #e6e9ef;
   font-weight: 600;
   font-size: 15px;
@@ -1279,10 +1276,4 @@ body.panel-open .side-backdrop {
 .bookmarks-panel {
   background: var(--panel-glass);
   border-color: rgba(255, 255, 255, 0.2);
-}
-
-.drawer-head {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
 }
