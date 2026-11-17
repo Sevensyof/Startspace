@@ -868,6 +868,7 @@ body[data-link-shape="round"] .link-icon {
   width: 250px;
   padding: 18px 14px;
   background: var(--panel-glass);
+  border-radius: 0 18px 18px 0;
   transform: translateX(-100%);
   transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
@@ -1064,6 +1065,7 @@ body[data-link-shape="round"] .link-icon {
   bottom: 0;
   width: min(420px, 94vw);
   background: var(--panel-glass);
+  border-radius: 18px 0 0 18px;
   transform: translateX(100%);
   transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
