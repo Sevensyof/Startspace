@@ -1246,9 +1246,13 @@ async function loadCurrency() {
 }
 
 function syncRail() {
-  const open = Boolean(document.querySelector(".ai-panel.open, .fun-panel.open"));
-  tabRail.classList.toggle("shifted", open);
-  document.body.classList.toggle("panel-open", open);
+  const hasOpen = Boolean(document.querySelector(".ai-panel.open, .fun-panel.open"));
+  aiHandle.classList.toggle("shifted", aiPanel.classList.contains("open"));
+  funHandle.classList.toggle("shifted", funPanel.classList.contains("open"));
+  for (const view of customPanelViews) {
+    view.handle.classList.toggle("shifted", view.panel.classList.contains("open"));
+  }
+  document.body.classList.toggle("panel-open", hasOpen);
 }
 
 function schedulePanelClose() {
