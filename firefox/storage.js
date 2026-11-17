@@ -57,7 +57,9 @@ const DEFAULT_SETTINGS = {
   showCurrency: false,
   widgetTransparency: 0,
   aiPanelName: "ИИ",
+  aiPanelIcon: "✨",
   funPanelName: "•••",
+  funPanelIcon: "🎮",
   customPanels: [],
   aiSites: DEFAULT_AI_SITES,
   funSites: DEFAULT_FUN_SITES
@@ -211,6 +213,7 @@ function loadSettings(callback) {
         .map((panel, index) => ({
           id: String(panel && panel.id ? panel.id : "panel" + (index + 1)),
           name: String(panel && panel.name ? panel.name : "Панель"),
+          icon: String(panel && panel.icon ? panel.icon : "📌"),
           sites: Array.isArray(panel && panel.sites) ? panel.sites : []
         }));
       if (typeof items.aiPanelName !== "string" || !items.aiPanelName.trim()) items.aiPanelName = "ИИ";

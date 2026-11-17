@@ -251,6 +251,20 @@ function applyTextColor() {
   $("text-swatch").style.background = base;
 }
 
+const PANEL_ICONS = ["✨", "🤖", "🧠", "💬", "🌐", "🔎", "🎮", "🎵", "📺", "📚", "⭐", "📌", "🚀", "🛠"];
+
+function fillIconSelect(select, value) {
+  const current = value || PANEL_ICONS[0];
+  const icons = PANEL_ICONS.includes(current) ? PANEL_ICONS : [current, ...PANEL_ICONS];
+  select.textContent = "";
+  for (const icon of icons) {
+    const option = document.createElement("option");
+    option.value = icon;
+    option.textContent = icon;
+    select.appendChild(option);
+  }
+  select.value = current;
+}
 function renderCustomPanelsEditor() {
   const wrap = $("custom-panels-editor");
   if (!wrap) return;
@@ -260,14 +274,10 @@ function renderCustomPanelsEditor() {
     const row = document.createElement("div");
     row.className = "custom-panel-row";
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.maxLength = 16;
-    input.value = panel.name || "Панель";
-    input.placeholder = "Название панели";
-    input.addEventListener("change", () => {
-      panel.name = input.value.trim() || "Панель";
-      input.value = panel.name;
+    const select = document.createElement("select");
+    fillIconSelect(select, panel.icon || "📌");
+    select.addEventListener("change", () => {
+      panel.icon = select.value;
       update({ customPanels: settings.customPanels });
     });
 
@@ -282,7 +292,7 @@ function renderCustomPanelsEditor() {
       renderCustomPanelsEditor();
     });
 
-    row.append(input, remove);
+    row.append(select, remove);
     wrap.appendChild(row);
   });
 }
@@ -298,8 +308,8 @@ function render() {
   $("show-ai-mode").checked = settings.showAiMode !== false;
   $("site-background").checked = Boolean(settings.siteBackground);
   $("search-engine").value = settings.searchEngine;
-  $("ai-panel-name").value = settings.aiPanelName;
-  $("fun-panel-name").value = settings.funPanelName;
+  fillIconSelect($("ai-panel-icon"), settings.aiPanelIcon);
+  fillIconSelect($("fun-panel-icon"), settings.funPanelIcon);
   $("hover-open-panels").checked = Boolean(settings.hoverOpenPanels);
 
   $("show-links").checked = settings.showLinks;
@@ -443,24 +453,21 @@ function bind() {
     settings.customPanels.push({
       id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
       name: "Панель " + (settings.customPanels.length + 1),
+      icon: "📌",
       sites: []
     });
     update({ customPanels: settings.customPanels });
     renderCustomPanelsEditor();
-    const inputs = $("custom-panels-editor").querySelectorAll("input");
-    if (inputs.length) inputs[inputs.length - 1].focus();
+    const selects = $("custom-panels-editor").querySelectorAll("select");
+    if (selects.length) selects[selects.length - 1].focus();
   });
 
-  $("ai-panel-name").addEventListener("change", () => {
-    const value = $("ai-panel-name").value.trim() || "ИИ";
-    $("ai-panel-name").value = value;
-    update({ aiPanelName: value });
+  $("ai-panel-icon").addEventListener("change", () => {
+    update({ aiPanelIcon: $("ai-panel-icon").value });
   });
 
-  $("fun-panel-name").addEventListener("change", () => {
-    const value = $("fun-panel-name").value.trim() || "•••";
-    $("fun-panel-name").value = value;
-    update({ funPanelName: value });
+  $("fun-panel-icon").addEventListener("change", () => {
+    update({ funPanelIcon: $("fun-panel-icon").value });
   });
 
   document.querySelectorAll("#link-shape button").forEach((button) => {

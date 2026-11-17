@@ -633,7 +633,7 @@ body.embedded .btn.ghost:hover {
   gap: 8px;
 }
 
-.custom-panel-row input {
+.custom-panel-row select {
   flex: 1;
 }
 

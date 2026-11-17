@@ -1510,10 +1510,10 @@ function setFunEditing(value) {
 function renderPanelNames() {
   const aiName = settings.aiPanelName || "ИИ";
   const funName = settings.funPanelName || "•••";
-  const aiLabel = aiHandle.querySelector(".ai-handle-label");
-  const funLabel = funHandle.querySelector(".fun-handle-dots");
-  if (aiLabel) aiLabel.textContent = aiName;
-  if (funLabel) funLabel.textContent = funName;
+  const aiIcon = aiHandle.querySelector(".ai-handle-icon");
+  const funIcon = funHandle.querySelector(".ai-handle-icon");
+  if (aiIcon) aiIcon.textContent = settings.aiPanelIcon || "✨";
+  if (funIcon) funIcon.textContent = settings.funPanelIcon || "🎮";
   aiHandle.title = aiName;
   funHandle.title = funName;
   aiPanel.setAttribute("aria-label", aiName);
@@ -1571,8 +1571,8 @@ function renderCustomPanels() {
     handle.className = "ai-handle custom-handle";
     handle.title = config.name || "Панель";
     const label = document.createElement("span");
-    label.className = "ai-handle-label";
-    label.textContent = config.name || "Панель";
+    label.className = "ai-handle-icon";
+    label.textContent = config.icon || "📌";
     handle.appendChild(label);
     tabRail.appendChild(handle);
 
@@ -2159,7 +2159,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (keys.includes("funSites")) {
     renderFunLinks();
   }
-  if (keys.some((key) => ["aiPanelName", "funPanelName"].includes(key))) {
+  if (keys.some((key) => ["aiPanelName", "funPanelName", "aiPanelIcon", "funPanelIcon"].includes(key))) {
     renderPanelNames();
   }
   if (keys.includes("customPanels")) {

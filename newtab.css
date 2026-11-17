@@ -1289,3 +1289,9 @@ body.panel-open .side-backdrop {
 .currency {
   color: var(--ui-text, #e6e9ef);
 }
+
+.ai-handle-icon {
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+}
