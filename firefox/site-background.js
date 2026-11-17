@@ -9,6 +9,17 @@
     return location.hostname.replace(/^www\./, "").toLowerCase().includes("google.");
   }
 
+  function isYouTubePage() {
+    const host = location.hostname.replace(/^www\./, "").toLowerCase();
+    return host === "youtube.com" || host.endsWith(".youtube.com");
+  }
+
+  function isYouTubeDark() {
+    const root = document.documentElement;
+    if (root.hasAttribute("dark") || root.getAttribute("dark") === "true") return true;
+    return bodyHasLightText();
+  }
+
   function removeGlassCards() {
     for (const element of document.querySelectorAll("." + GLASS_CLASS)) {
       element.classList.remove(GLASS_CLASS);
@@ -112,19 +123,21 @@
       return;
     }
 
-    const lightText = bodyHasLightText();
+    const youtube = isYouTubePage();
+    const darkSurface = youtube ? isYouTubeDark() : bodyHasLightText();
+    const darkScrim = youtube ? 0.78 : 0.58;
     siteBackgroundActive = true;
     document.documentElement.style.setProperty(
       "--startspace-site-scrim",
-      lightText ? "rgba(8, 11, 17, 0.58)" : "rgba(248, 250, 252, 0.7)"
+      darkSurface ? `rgba(8, 11, 17, ${darkScrim})` : "rgba(248, 250, 252, 0.7)"
     );
     document.documentElement.style.setProperty(
       "--startspace-glass-bg",
-      lightText ? "rgba(15, 18, 26, 0.58)" : "rgba(255, 255, 255, 0.62)"
+      darkSurface ? "rgba(15, 18, 26, 0.58)" : "rgba(255, 255, 255, 0.62)"
     );
     document.documentElement.style.setProperty(
       "--startspace-glass-border",
-      lightText ? "rgba(255, 255, 255, 0.14)" : "rgba(15, 20, 28, 0.12)"
+      darkSurface ? "rgba(255, 255, 255, 0.14)" : "rgba(15, 20, 28, 0.12)"
     );
 
     let layer = document.getElementById(LAYER_ID);
@@ -168,11 +181,19 @@
       #page-manager,
       #columns,
       #primary,
-      #secondary {
+      #secondary,
+      ytd-browse,
+      ytd-rich-grid-renderer,
+      ytd-rich-section-renderer,
+      ytd-rich-shelf-renderer,
+      ytd-reel-shelf-renderer,
+      ytd-two-column-browse-results-renderer,
+      ytd-section-list-renderer,
+      ytd-item-section-renderer {
         background: transparent !important;
       }
       ytd-masthead {
-        background-color: rgba(15, 17, 23, 0.84) !important;
+        background-color: rgba(15, 17, 23, 0.92) !important;
         backdrop-filter: blur(14px);
       }
       .${GLASS_CLASS} {
