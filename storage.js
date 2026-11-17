@@ -74,7 +74,7 @@ function normalizePanelIcon(value, fallback) {
 function panelIconSvg(id, fallback) {
   const key = normalizePanelIcon(id, fallback);
   const icon = PANEL_ICONS.find((item) => item.id === key) || PANEL_ICONS[0];
-  return icon.svg;
+  return icon.svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ');
 }
 
 function panelIconNode(id, fallback) {
