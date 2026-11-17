@@ -40,6 +40,7 @@ const DEFAULT_SETTINGS = {
   gradientEnd: "#2a3040",
   gradientAngle: 135,
   siteBackground: false,
+  hoverOpenPanels: false,
   panelOpacity: 66,
   showRecommended: true,
   showSearch: true,

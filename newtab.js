@@ -1295,6 +1295,11 @@ function closeAllPanels() {
   syncRail();
 }
 
+function handlePanelHover(panel) {
+  cancelPanelClose();
+  if (settings.hoverOpenPanels) openPanel(panel);
+}
+
 const SITE_ICON_MAP = new Map();
 
 for (const site of [...AI_SITES, ...SOCIAL_SITES]) {
@@ -1584,7 +1589,7 @@ function renderCustomPanels() {
       else openPanel(panel);
     });
 
-    handle.addEventListener("mouseenter", cancelPanelClose);
+    handle.addEventListener("mouseenter", () => handlePanelHover(panel));
     handle.addEventListener("mouseleave", schedulePanelClose);
     panel.addEventListener("mouseenter", cancelPanelClose);
     panel.addEventListener("mouseleave", schedulePanelClose);
@@ -2041,6 +2046,9 @@ funHandle.addEventListener("click", (event) => {
   if (funPanel.classList.contains("open")) closeAllPanels();
   else openPanel(funPanel);
 });
+
+aiHandle.addEventListener("mouseenter", () => handlePanelHover(aiPanel));
+funHandle.addEventListener("mouseenter", () => handlePanelHover(funPanel));
 
 for (const el of [aiPanel, funPanel, tabRail]) {
   el.addEventListener("mouseenter", cancelPanelClose);

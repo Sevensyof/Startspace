@@ -317,6 +317,7 @@ function render() {
   $("search-engine").value = settings.searchEngine;
   $("ai-panel-name").value = settings.aiPanelName;
   $("fun-panel-name").value = settings.funPanelName;
+  $("hover-open-panels").checked = Boolean(settings.hoverOpenPanels);
 
   $("show-links").checked = settings.showLinks;
   document.querySelectorAll("#link-shape button").forEach((button) => {
@@ -619,6 +620,7 @@ function bind() {
     ["voice-search", "voiceSearch"],
     ["show-ai-mode", "showAiMode"],
     ["site-background", "siteBackground"],
+    ["hover-open-panels", "hoverOpenPanels"],
     ["show-links", "showLinks"],
     ["show-weather", "showWeather"],
     ["show-currency", "showCurrency"],
