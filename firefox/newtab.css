@@ -1260,8 +1260,6 @@ body.panel-open .side-backdrop {
 .fun-panel,
 .drawer,
 #settings-btn,
-.ai-handle,
-.fun-handle,
 .bookmarks-panel {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
