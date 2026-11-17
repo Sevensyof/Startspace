@@ -2118,7 +2118,7 @@ document.getElementById("fun-edit").addEventListener("click", () => {
   setFunEditing(!funEditing);
 });
 
-drawerClose.addEventListener("click", closeDrawer);
+if (drawerClose) drawerClose.addEventListener("click", closeDrawer);
 drawerBackdrop.addEventListener("click", closeDrawer);
 
 drawerFrame.addEventListener("load", () => {

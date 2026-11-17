@@ -1060,7 +1060,6 @@ body[data-link-shape="round"] .link-icon {
   bottom: 0;
   width: min(420px, 94vw);
   background: rgba(var(--panel-rgb, 13, 17, 23), var(--panel-opacity, 0.92));
-  border-left: 1px solid #232c3d;
   transform: translateX(100%);
   transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
@@ -1076,12 +1075,24 @@ body[data-link-shape="round"] .link-icon {
 .drawer-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px;
-  border-bottom: 1px solid #1c2432;
+  justify-content: flex-start;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 13, 20, 0.42);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: #e6e9ef;
   font-weight: 600;
   font-size: 15px;
+}
+
+.drawer-title {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .drawer-close {
