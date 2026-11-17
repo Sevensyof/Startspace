@@ -763,15 +763,13 @@ body[data-link-shape="round"] .link-icon {
   border-radius: 14px 0 0 14px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-right: 0;
-  background: rgba(var(--panel-rgb, 13, 17, 23), 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(var(--panel-rgb, 13, 17, 23), var(--panel-opacity, 0.92));
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 1;
   transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.35s ease,
     left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
     height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -817,9 +815,7 @@ body[data-link-shape="round"] .link-icon {
   border-radius: 0 14px 14px 0;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-left: 0;
-  background: rgba(var(--panel-rgb, 13, 17, 23), 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(var(--panel-rgb, 13, 17, 23), var(--panel-opacity, 0.92));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -828,7 +824,7 @@ body[data-link-shape="round"] .link-icon {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
-  opacity: 0.7;
+  opacity: 1;
   cursor: pointer;
   transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.35s ease,
     width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1181,7 +1177,7 @@ body.panel-open .side-backdrop {
 }
 
 .light-theme #settings-btn {
-  background: rgba(var(--panel-rgb, 13, 17, 23), 0.9);
+  background: rgba(var(--panel-rgb, 13, 17, 23), var(--panel-opacity, 0.92));
   border-color: rgba(255, 255, 255, 0.16);
   color: #fff;
 }
@@ -1219,7 +1215,7 @@ body.panel-open .side-backdrop {
 }
 
 .light-theme .ai-handle {
-  background: rgba(var(--panel-rgb, 13, 17, 23), 0.9);
+  background: rgba(var(--panel-rgb, 13, 17, 23), var(--panel-opacity, 0.92));
   border-color: rgba(255, 255, 255, 0.16);
   color: #fff;
 }
