@@ -284,7 +284,8 @@ input[type="file"]::file-selector-button:hover {
 }
 
 body.embedded .widget-setting {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .toggle input {
@@ -511,7 +512,8 @@ body.embedded .foot-note {
 }
 
 body.embedded .tabs {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .tabs button {
@@ -567,8 +569,10 @@ body.embedded .card {
   padding: 18px 16px;
   border-radius: 14px;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 body.embedded main {
