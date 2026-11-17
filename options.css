@@ -726,6 +726,10 @@ input[type="url"]::placeholder {
   height: 36px;
 }
 
+body.embedded .panel-icon-preview {
+  display: none;
+}
+
 .panel-field-disabled {
   opacity: 0.55;
 }
