@@ -692,11 +692,6 @@ input[type="url"]::placeholder {
 
 .save-status.unsaved {
   color: #fbbf24;
-  opacity: 1;
-}
-
-.save-status {
-  opacity: 0.8;
 }
 
 .icon-select-row {

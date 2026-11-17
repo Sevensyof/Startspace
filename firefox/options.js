@@ -6,6 +6,7 @@ if (new URLSearchParams(location.search).get("embed") === "1") {
 
 let settings = cloneDefaults();
 let dirty = false;
+let statusTimer = null;
 
 function setDirty(value) {
   dirty = value;
@@ -15,6 +16,8 @@ function setDirty(value) {
     status.textContent = value ? "Есть изменения" : "Сохранено";
     status.classList.toggle("unsaved", value);
     status.classList.add("visible");
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => status.classList.remove("visible"), 1000);
   }
   if (button) button.disabled = !value;
 }
