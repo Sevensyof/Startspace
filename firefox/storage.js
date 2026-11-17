@@ -118,8 +118,10 @@ const DEFAULT_SETTINGS = {
   widgetTransparency: 0,
   aiPanelName: "ИИ",
   aiPanelIcon: "spark",
+  aiPanelHidden: false,
   funPanelName: "•••",
   funPanelIcon: "game",
+  funPanelHidden: false,
   customPanels: [],
   aiSites: DEFAULT_AI_SITES,
   funSites: DEFAULT_FUN_SITES

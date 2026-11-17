@@ -730,3 +730,7 @@ input[type="url"]::placeholder {
   width: 36px;
   height: 36px;
 }
+
+.panel-field-disabled {
+  opacity: 0.55;
+}

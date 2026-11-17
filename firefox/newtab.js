@@ -1896,9 +1896,29 @@ function applyWidgetStyle() {
   document.documentElement.style.setProperty("--widget-alpha-dark", String(0.55 * factor));
 }
 
+function applyStaticPanelsVisibility() {
+  const aiHidden = Boolean(settings.aiPanelHidden);
+  const funHidden = Boolean(settings.funPanelHidden);
+
+  aiPanel.classList.toggle("hidden", aiHidden);
+  aiHandle.classList.toggle("hidden", aiHidden);
+  funPanel.classList.toggle("hidden", funHidden);
+  funHandle.classList.toggle("hidden", funHidden);
+
+  if (aiHidden && aiPanel.classList.contains("open")) {
+    aiPanel.classList.remove("open");
+    if (aiEditing) setAiEditing(false);
+  }
+  if (funHidden && funPanel.classList.contains("open")) {
+    funPanel.classList.remove("open");
+    if (funEditing) setFunEditing(false);
+  }
+  syncRail();
+}
 function applyAll() {
   applyAccentColor();
   applyTextColor();
+  applyStaticPanelsVisibility();
   applyClockStyle();
   applyLinkShape();
   applyWidgetStyle();
@@ -2228,6 +2248,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if (keys.includes("uiTextColor")) {
     applyTextColor();
+  }
+  if (keys.some((key) => ["aiPanelHidden", "funPanelHidden"].includes(key))) {
+    applyStaticPanelsVisibility();
   }
   if (keys.some((key) => ["showWeather", "weatherLat", "weatherLon", "weatherCity"].includes(key))) {
     try {

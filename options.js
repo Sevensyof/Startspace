@@ -335,6 +335,12 @@ function render() {
   fillIconSelect($("fun-panel-icon"), settings.funPanelIcon);
   setIconPreview($("ai-panel-icon-preview"), $("ai-panel-icon").value);
   setIconPreview($("fun-panel-icon-preview"), $("fun-panel-icon").value);
+  $("ai-panel-remove").textContent = settings.aiPanelHidden ? "↺" : "✕";
+  $("ai-panel-remove").title = settings.aiPanelHidden ? "Вернуть панель" : "Убрать панель";
+  $("fun-panel-remove").textContent = settings.funPanelHidden ? "↺" : "✕";
+  $("fun-panel-remove").title = settings.funPanelHidden ? "Вернуть панель" : "Убрать панель";
+  $("ai-panel-field").classList.toggle("panel-field-disabled", Boolean(settings.aiPanelHidden));
+  $("fun-panel-field").classList.toggle("panel-field-disabled", Boolean(settings.funPanelHidden));
   $("hover-open-panels").checked = Boolean(settings.hoverOpenPanels);
 
   $("show-links").checked = settings.showLinks;
@@ -497,6 +503,16 @@ function bind() {
   $("fun-panel-icon").addEventListener("change", () => {
     setIconPreview($("fun-panel-icon-preview"), $("fun-panel-icon").value);
     update({ funPanelIcon: $("fun-panel-icon").value });
+  });
+
+  $("ai-panel-remove").addEventListener("click", () => {
+    update({ aiPanelHidden: !settings.aiPanelHidden });
+    render();
+  });
+
+  $("fun-panel-remove").addEventListener("click", () => {
+    update({ funPanelHidden: !settings.funPanelHidden });
+    render();
   });
 
   document.querySelectorAll("#link-shape button").forEach((button) => {
