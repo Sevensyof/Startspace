@@ -189,7 +189,22 @@
       ytd-reel-shelf-renderer,
       ytd-two-column-browse-results-renderer,
       ytd-section-list-renderer,
-      ytd-item-section-renderer {
+      ytd-item-section-renderer,
+      ytd-rich-grid-row,
+      ytd-rich-item-renderer,
+      ytd-rich-grid-media,
+      ytd-rich-section-renderer #content,
+      ytd-rich-section-renderer #contents,
+      ytd-rich-shelf-renderer #content,
+      ytd-rich-shelf-renderer #contents,
+      ytd-reel-shelf-renderer #content,
+      ytd-reel-shelf-renderer #contents,
+      ytd-horizontal-card-list-renderer,
+      ytd-feed-filter-chip-bar-renderer,
+      #chips,
+      #chips-wrapper,
+      ytd-browse #contents,
+      ytd-rich-grid-renderer #contents {
         background: transparent !important;
       }
       ytd-masthead {
