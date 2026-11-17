@@ -266,8 +266,13 @@ function detectLightImage(url) {
   });
 }
 
+function backgroundBlurPx(value) {
+  return Math.min(20, Math.max(0, Number(value) || 0) / 5);
+}
+
 function applyBackground() {
   const { backgroundType, color, imageUrl, imageType, imageDim, imageBlur } = settings;
+  const blurPx = backgroundBlurPx(imageBlur);
 
   if (backgroundType === "image" && imageUrl) {
     document.body.classList.remove("light-theme");
@@ -278,7 +283,7 @@ function applyBackground() {
       bgEl.style.backgroundImage = "none";
       bgEl.style.backgroundColor = "#000";
       bgEl.style.filter = "none";
-      bgVideo.style.filter = imageBlur > 0 ? `blur(${imageBlur}px)` : "none";
+      bgVideo.style.filter = blurPx > 0 ? `blur(${blurPx}px)` : "none";
 
       if (bgVideo.getAttribute("src") !== imageUrl) {
         bgVideo.src = imageUrl;
@@ -301,7 +306,7 @@ function applyBackground() {
 
     bgEl.style.backgroundImage = `url(${JSON.stringify(imageUrl)})`;
     bgEl.style.backgroundColor = "#000";
-    bgEl.style.filter = imageBlur > 0 ? `blur(${imageBlur}px)` : "none";
+    bgEl.style.filter = blurPx > 0 ? `blur(${blurPx}px)` : "none";
     overlayEl.style.opacity = imageDim / 100;
     return;
   }

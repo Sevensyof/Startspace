@@ -552,6 +552,18 @@ body.embedded .tabs {
 body.embedded {
   padding: 14px 14px 36px;
   background: transparent;
+  scrollbar-width: none;
+}
+
+html.embedded {
+  scrollbar-width: none;
+}
+
+html.embedded::-webkit-scrollbar,
+body.embedded::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body.embedded .head {

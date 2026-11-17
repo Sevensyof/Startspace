@@ -91,7 +91,7 @@
         }
       }
       const dim = Math.min(0.85, Math.max(0, Number(settings.imageDim) / 100 || 0));
-      const blur = Math.max(0, Number(settings.imageBlur) || 0);
+      const blur = Math.min(20, Math.max(0, Number(settings.imageBlur) || 0) / 5);
       return {
         image: `linear-gradient(rgba(0, 0, 0, ${dim}), rgba(0, 0, 0, ${dim})), url(${JSON.stringify(url)})`,
         dim,
@@ -233,7 +233,7 @@
         imageUrl: "",
         imageType: "image",
         imageDim: 35,
-        imageBlur: 7,
+        imageBlur: 35,
         gradientStart: "#10141f",
         gradientEnd: "#2a3040",
         gradientAngle: 135

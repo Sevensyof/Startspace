@@ -104,7 +104,7 @@ const DEFAULT_SETTINGS = {
   imageUrl: "media/default-bg.jpg",
   imageType: "image",
   imageDim: 35,
-  imageBlur: 7,
+  imageBlur: 35,
   gradientStart: "#10141f",
   gradientEnd: "#2a3040",
   gradientAngle: 135,
@@ -267,7 +267,7 @@ function cloneDefaults() {
 function loadSettings(callback) {
   chrome.storage.local.get(
     Object.assign(
-      { aiDefaultsRestored: false, weatherLocationCleared: false, legacyStorageCleaned: false },
+      { aiDefaultsRestored: false, weatherLocationCleared: false, legacyStorageCleaned: false, backgroundBlurPercentMigrated: false },
       DEFAULT_SETTINGS
     ),
     (items) => {
@@ -291,6 +291,18 @@ function loadSettings(callback) {
       items.funPanelIcon = normalizePanelIcon(items.funPanelIcon, "game");
       if (typeof items.aiPanelName !== "string" || !items.aiPanelName.trim()) items.aiPanelName = "ИИ";
       if (typeof items.funPanelName !== "string" || !items.funPanelName.trim()) items.funPanelName = "•••";
+
+      if (!items.backgroundBlurPercentMigrated) {
+        const previousBlur = Number(items.imageBlur);
+        if (Number.isFinite(previousBlur) && previousBlur <= 20) {
+          items.imageBlur = Math.min(100, Math.round(previousBlur * 5));
+        }
+        items.backgroundBlurPercentMigrated = true;
+        chrome.storage.local.set({
+          imageBlur: items.imageBlur,
+          backgroundBlurPercentMigrated: true
+        });
+      }
 
       if (!items.legacyStorageCleaned) {
         const legacyKeys = [
@@ -345,6 +357,7 @@ function loadSettings(callback) {
       delete items.aiDefaultsRestored;
       delete items.weatherLocationCleared;
       delete items.legacyStorageCleaned;
+      delete items.backgroundBlurPercentMigrated;
       callback(items);
     }
   );

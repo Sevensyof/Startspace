@@ -1,6 +1,7 @@
 const $ = (id) => document.getElementById(id);
 
 if (new URLSearchParams(location.search).get("embed") === "1") {
+  document.documentElement.classList.add("embedded");
   document.body.classList.add("embedded");
 }
 
@@ -367,7 +368,7 @@ function render() {
   $("image-dim").value = settings.imageDim;
   $("image-blur").value = settings.imageBlur;
   $("image-dim-value").textContent = settings.imageDim + "%";
-  $("image-blur-value").textContent = settings.imageBlur + "px";
+  $("image-blur-value").textContent = settings.imageBlur + "%";
   $("show-recommended").checked = settings.showRecommended;
   $("recommended-field").classList.toggle("hidden", !settings.showRecommended);
   $("save-bg-history").checked = settings.saveBgHistory !== false;
@@ -592,7 +593,7 @@ function bind() {
   });
 
   $("image-blur").addEventListener("input", () => {
-    $("image-blur-value").textContent = $("image-blur").value + "px";
+    $("image-blur-value").textContent = $("image-blur").value + "%";
     update({ imageBlur: Number($("image-blur").value) });
   });
 
