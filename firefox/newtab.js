@@ -2021,6 +2021,15 @@ settingsBtn.addEventListener("click", () => {
   else openDrawer();
 });
 
+settingsBtn.addEventListener("mouseenter", () => {
+  cancelDrawerClose();
+  if (settings.hoverOpenPanels && !drawerOpen) openDrawer();
+});
+
+settingsBtn.addEventListener("mouseleave", () => {
+  if (settings.hoverOpenPanels) scheduleDrawerClose();
+});
+
 function toggleWeather() {
   const expanded = weatherEl.classList.toggle("expanded");
   weatherEl.setAttribute("aria-expanded", expanded ? "true" : "false");
