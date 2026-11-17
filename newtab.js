@@ -1261,9 +1261,26 @@ function cancelPanelClose() {
 }
 
 function openPanel(panel) {
-  for (const other of document.querySelectorAll(".ai-panel.open, .fun-panel.open")) {
-    if (other !== panel) other.classList.remove("open");
+  const openPanels = Array.from(document.querySelectorAll(".ai-panel.open, .fun-panel.open")).filter(
+    (item) => item !== panel
+  );
+
+  if (openPanels.length > 0) {
+    panel.classList.add("no-transition");
+    for (const other of openPanels) {
+      other.classList.add("no-transition");
+      other.classList.remove("open");
+    }
+    panel.classList.add("open");
+    syncRail();
+    void panel.offsetWidth;
+    requestAnimationFrame(() => {
+      panel.classList.remove("no-transition");
+      for (const other of openPanels) other.classList.remove("no-transition");
+    });
+    return;
   }
+
   panel.classList.add("open");
   syncRail();
 }
