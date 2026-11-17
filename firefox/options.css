@@ -317,7 +317,7 @@ body.embedded .widget-setting {
 }
 
 .toggle input:checked + .switch {
-  background: var(--accent);
+  background: #22c55e;
 }
 
 .toggle input:checked + .switch::after {
