@@ -774,13 +774,16 @@ body[data-link-shape="round"] .link-icon {
   justify-content: center;
   cursor: pointer;
   opacity: 1;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease, left 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    width 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 #settings-btn:hover {
   opacity: 1;
   background: rgba(255, 255, 255, 0.07);
   box-shadow: none;
+  left: -38px;
+  width: 38px;
 }
 
 #settings-btn svg {
@@ -804,7 +807,7 @@ body[data-link-shape="round"] .link-icon {
 }
 
 .tab-rail.shifted {
-  transform: translateX(240px);
+  transform: translateX(250px);
 }
 
 .ai-handle,
@@ -825,7 +828,8 @@ body[data-link-shape="round"] .link-icon {
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
   opacity: 1;
   cursor: pointer;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease,
+    width 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .ai-handle:hover,
@@ -833,6 +837,7 @@ body[data-link-shape="round"] .link-icon {
   opacity: 1;
   background: rgba(255, 255, 255, 0.07);
   box-shadow: none;
+  width: 38px;
 }
 
 .fun-handle-dots {
