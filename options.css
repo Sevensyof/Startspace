@@ -88,6 +88,22 @@ main {
   font-weight: 600;
 }
 
+.label:has(.value) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.label .value {
+  margin-left: auto;
+}
+
+#save-settings:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 input[type="text"],
 input[type="url"],
 select {
@@ -115,7 +131,43 @@ input[type="url"]::placeholder {
 
 input[type="range"] {
   width: 100%;
-  accent-color: var(--accent);
+  height: 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border: 0;
+  border-radius: 50%;
+  background: #f4f6fb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: #f4f6fb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 input[type="color"] {
@@ -482,7 +534,7 @@ body.embedded .widget-setting {
 }
 
 body.embedded .foot-note {
-  margin: 16px 6px 0;
+  margin: 16px 0 0;
   font-size: 11px;
 }
 
@@ -528,8 +580,9 @@ body.embedded .tabs {
 }
 
 .tabs button.active {
-  background: var(--accent-soft);
+  background: rgba(255, 255, 255, 0.12);
   color: #fff;
+  font-weight: 600;
 }
 
 main .card[data-tab] {
