@@ -395,22 +395,17 @@ body.embedded .widget-setting {
   width: 66px;
   height: 46px;
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 0;
   background-color: #0f141d;
   background-size: cover;
   background-position: center;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: transform 0.15s;
 }
 
 .bg-thumb:hover {
   transform: scale(1.04);
-}
-
-.bg-thumb.active {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .bg-thumb-remove {

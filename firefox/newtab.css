@@ -774,18 +774,13 @@ body[data-link-shape="round"] .link-icon {
   justify-content: center;
   cursor: pointer;
   opacity: 1;
-  transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.35s ease,
-    left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-    height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.2s ease, background 0.2s ease;
 }
 
 #settings-btn:hover {
   opacity: 1;
-  background: rgba(var(--accent-rgb, 129, 140, 248), 0.35);
-  box-shadow: 0 0 28px rgba(var(--accent-rgb, 129, 140, 248), 0.45);
-  left: -44px;
-  width: 44px;
-  height: 112px;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: none;
 }
 
 #settings-btn svg {
@@ -1195,10 +1190,6 @@ body.panel-open .side-backdrop {
   background: var(--panel-glass);
   border-color: rgba(255, 255, 255, 0.16);
   color: #fff;
-}
-
-.light-theme #settings-btn:hover {
-  background: rgba(var(--accent-rgb, 129, 140, 248), 0.35);
 }
 
 .light-theme .weather,
