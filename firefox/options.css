@@ -626,9 +626,19 @@ body.embedded .head > div:first-child {
 body.embedded .card {
   padding: 18px 16px;
   border-radius: 14px;
-  gap: 12px;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+.card > * + * {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 10px;
+}
+
+.card > h2 + * {
+  border-top: 0;
+  padding-top: 0;
 }
 
 body.embedded main {
